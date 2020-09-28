@@ -4,6 +4,8 @@ using System.Text;
 using System.Linq;
 using Numpy;
 using System.IO;
+using CsvHelper;
+using System.Globalization;
 
 namespace consoletester
 {
@@ -13,36 +15,56 @@ namespace consoletester
         public int interval = 1;
         public dynamic tempSet;
         List<double> diff = new List<double>();
+        List<double> tempList = new List<double>();
 
         public List<double> difference() {
+            int header = 1;
             dataSet = File.ReadAllLines(@"C:\Users\Michael\PycharmProjects\testExample\trainData.csv");
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
                        select new
-                       {                          
+                       {   
                            Temp = data[1],
 
+
                        });
-            for (int i = 0; i <= tempSet.Length(); i++) 
+            foreach (var temp in tempSet)
             {
-                double value = tempSet[i] - tempSet[i - interval];
+                if (header == 1)
+                {   
+                    header++;
+                    continue;
+                }
+                tempList.Add(double.Parse(temp.Temp.Trim('"','\'')));
+            }
+
+
+
+                for (int i = 1; i < tempList.Count; i++) 
+            {
+                double value = tempList[i] - tempList[i - interval];
                 diff.Add(value);
             }
                         
             return diff;
 
          }
-        public void testMethod()
-        {
-            model md = new model();
-            List<double> testList = md.difference();
+        //public void testMethod()
+        //{
+        //    model md = new model();
+        //    List<double> testList = md.difference();
+        //    using (var writer = new StreamWriter(@"C:\Users\Michael\PycharmProjects\testExample\shit.csv"))
+        //    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
 
-            foreach (int item in testList)
-            {
-                Console.WriteLine(item);
-            }
+        //        foreach (var value in testList)
+        //    {
+        //            csv.WriteField(value);
+        //            csv.NextRecord();
+        //            // csv.WriteRecords(testList.ToArray());
+        //            writer.Flush();
+        //        }
+        //}
         }
     }
    
 
-}
