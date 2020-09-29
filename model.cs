@@ -4,9 +4,7 @@ using System.Linq;
 using System.IO;
 using CsvHelper;
 using System.Globalization;
-using Extreme.Statistics.TimeSeriesAnalysis;
-using Extreme.Mathematics;
-using Extreme.Statistics;
+
 
 namespace consoletester
 {
@@ -25,7 +23,7 @@ namespace consoletester
                 {
                 returnList.Add(Decimal.ToDouble(listToBeConverted[i]));
                 }
-                return returnList;
+              return returnList;
             }
 
              public List<decimal> difference(int interval) {
@@ -63,10 +61,7 @@ namespace consoletester
             }
             return diff;
          }
-
-        ArimaModel arimam = new ArimaModel(2, 1);
-
-
+            
         public void testMethod()
         {
             model md = new model();
