@@ -64,6 +64,11 @@ namespace consoletester
             }
             return diff;
          }
+        public int inverse(double[] history,double yhat, int interval)   {
+            
+            return Convert.ToInt32(yhat + history[-interval]);
+        }
+        
 
         [Obsolete]
         public void testMethod()
@@ -104,14 +109,13 @@ namespace consoletester
                     parameter.PValue);
 
             Console.WriteLine("Error variance: {0:F4}", arimam.ErrorVariance);
-
             Console.WriteLine("Log-likelihood: {0:F4}", arimam.LogLikelihood);
             Console.WriteLine("AIC: {0:F5}", arimam.GetAkaikeInformationCriterion());
             Console.WriteLine("BIC: " + arimam.GetBayesianInformationCriterion());
 
-            double nextValue = arimam.Forecast();
+            double nextValue = arimam.Forecast(Convert.ToInt32(myArray.Length));
 
-            Console.WriteLine(nextValue + "PENIS");
+            Console.WriteLine(nextValue + " PENIS");
 
             //using (var writer = new StreamWriter(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\shit3.csv"))
             //using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
