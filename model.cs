@@ -4,7 +4,8 @@ using System.Linq;
 using System.IO;
 using CsvHelper;
 using System.Globalization;
-
+using Extreme.Statistics.TimeSeriesAnalysis;
+using Extreme.Mathematics;
 
 namespace consoletester
 {
@@ -61,7 +62,21 @@ namespace consoletester
             }
             return diff;
          }
-            
+
+
+
+        public void createModel()
+        {
+            var tempData = Vector.Create(new double[]
+            {
+                -3.7, -2.9
+            });
+
+            ArimaModel arimam = new ArimaModel(tempData, 2, 1);
+        }
+
+
+
         public void testMethod()
         {
             model md = new model();
