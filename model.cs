@@ -14,13 +14,14 @@ namespace consoletester
         public string[] dataSet;
         public int interval = 1;
         public dynamic tempSet;
-        List<double> diff = new List<double>();
-        List<double> tempList = new List<double>();
-        public double doubleNumber;
+        List<decimal> diff = new List<decimal>();
+        List<decimal> tempList = new List<decimal>();
 
-        public List<double> difference() {
+
+             public List<decimal> difference(int interval) {
             int header = 1;
-            dataSet = File.ReadAllLines(@"C:\Users\Michael\PycharmProjects\testExample\trainData.csv");
+            
+            dataSet = File.ReadAllLines(@"C:\Users\Michael\source\repos\consoletester\trainData.csv");
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
                        select new
@@ -36,30 +37,28 @@ namespace consoletester
                     header++;
                     continue;
                 }
-                tempList.Add(double.Parse(temp.Temp.Trim('"','\'')));
+                tempList.Add(decimal.Parse(temp.Temp.Trim('"'), NumberFormatInfo.InvariantInfo));
 
-                Console.WriteLine(double.Parse(temp.Temp.Trim(new char[] {'"'}), NumberFormatInfo.InvariantInfo));
+                //Console.WriteLine(decimal.Parse(temp.Temp.Trim(new char[] {'"'}), NumberFormatInfo.InvariantInfo));
 
-                //Console.WriteLine(temp.Temp.Trim);
+                //Console.WriteLine(tempList.Count());
             }
 
-
-
-                for (int i = 365; i < tempList.Count; i++) 
+                
+            foreach (var i in Enumerable.Range(interval, tempList.Count - interval))
             {
-                double value = tempList[i] - tempList[i - interval];
+                var value = tempList[i] - tempList[i - interval];
                 diff.Add(value);
-                //Console.WriteLine(value);
+                Console.WriteLine(value);
             }
-                        
             return diff;
-
          }
+            
         public void testMethod()
         {
             model md = new model();
-            List<double> testList = md.difference();
-            using (var writer = new StreamWriter(@"C:\Users\Michael\PycharmProjects\testExample\shit2.csv"))
+            List<decimal> testList = md.difference(365);
+            using (var writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\shit3.csv"))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
 
                 foreach (var value in testList)
