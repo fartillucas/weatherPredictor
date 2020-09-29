@@ -60,7 +60,7 @@ namespace consoletester
             {
                 var value = tempList[i] - tempList[i - interval];
                 diff.Add(value);
-                Console.WriteLine(value);
+                //Console.WriteLine(value);
             }
             return diff;
          }
@@ -71,8 +71,19 @@ namespace consoletester
             model md = new model();
             List<decimal> testList = md.difference(365);
             List<double> inputList = md.converListToDobule(testList);
+
+            for(int i=0; i<inputList.Count; i++)
+            {
+                Console.WriteLine(inputList[i]);
+            }
+
             double[] myArray = inputList.ToArray();
+            //for (int i = 0; i < myArray.Length; i++)
+            //{
+            //    Console.WriteLine(myArray[i]);
+            //}
             ArimaModel arimam = new ArimaModel(myArray, 7, 0, 1);
+            arimam.EstimateMean = true;
             arimam.Compute();
 
 
@@ -97,6 +108,10 @@ namespace consoletester
             Console.WriteLine("Log-likelihood: {0:F4}", arimam.LogLikelihood);
             Console.WriteLine("AIC: {0:F5}", arimam.GetAkaikeInformationCriterion());
             Console.WriteLine("BIC: " + arimam.GetBayesianInformationCriterion());
+
+            double nextValue = arimam.Forecast();
+
+            Console.WriteLine(nextValue + "PENIS");
 
             //using (var writer = new StreamWriter(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\shit3.csv"))
             //using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
