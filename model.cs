@@ -6,6 +6,11 @@ using Numpy;
 using System.IO;
 using CsvHelper;
 using System.Globalization;
+using Extreme.DataAnalysis;
+using Extreme.Mathematics;
+using Extreme.Statistics;
+using Extreme.Statistics.TimeSeriesAnalysis;
+
 
 namespace consoletester
 {
@@ -24,7 +29,7 @@ namespace consoletester
                 {
                 returnList.Add(Decimal.ToDouble(listToBeConverted[i]));
                 }
-                return returnList;
+              return returnList;
             }
 
              public List<decimal> difference(int interval) {
@@ -62,7 +67,12 @@ namespace consoletester
             }
             return diff;
          }
-            
+
+
+        //Fit the model
+
+
+
         public void testMethod()
         {
             model md = new model();
