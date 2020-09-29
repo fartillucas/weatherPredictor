@@ -4,6 +4,9 @@ using System.Linq;
 using System.IO;
 using CsvHelper;
 using System.Globalization;
+using Extreme.Statistics.TimeSeriesAnalysis;
+using Extreme.Mathematics;
+using Extreme.Statistics;
 
 namespace consoletester
 {
@@ -60,7 +63,10 @@ namespace consoletester
             }
             return diff;
          }
-            
+
+        ArimaModel arimam = new ArimaModel(2, 1);
+
+
         public void testMethod()
         {
             model md = new model();
