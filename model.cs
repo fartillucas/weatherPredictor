@@ -6,6 +6,8 @@ using CsvHelper;
 using System.Globalization;
 using Extreme.Statistics.TimeSeriesAnalysis;
 using Extreme.Mathematics;
+using Extreme.Statistics;
+using Extreme.DataAnalysis;
 
 namespace consoletester
 {
@@ -24,7 +26,7 @@ namespace consoletester
                 {
                 returnList.Add(Decimal.ToDouble(listToBeConverted[i]));
                 }
-              return returnList;
+                return returnList;
             }
 
              public List<decimal> difference(int interval) {
@@ -63,34 +65,49 @@ namespace consoletester
             return diff;
          }
 
-
-
-        public void createModel()
-        {
-            var tempData = Vector.Create(new double[]
-            {
-                -3.7, -2.9
-            });
-
-            ArimaModel arimam = new ArimaModel(tempData, 2, 1);
-        }
-
-
-
+        [Obsolete]
         public void testMethod()
         {
             model md = new model();
             List<decimal> testList = md.difference(365);
-            using (var writer = new StreamWriter(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\shit3.csv"))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            List<double> inputList = md.converListToDobule(testList);
+            double[] myArray = inputList.ToArray();
+            ArimaModel arimam = new ArimaModel(myArray, 7, 0, 1);
+            arimam.Compute();
 
-                foreach (var value in testList)
-                {
-                    csv.WriteField(value);
-                    csv.NextRecord();
-                    // csv.WriteRecords(testList.ToArray());
-                    writer.Flush();
-                }
+
+            Console.WriteLine("Variable              Value    Std.Error  t-stat  p-Value");
+            foreach (Parameter parameter in arimam.Parameters)
+                // Parameter objects have the following properties:
+                Console.WriteLine("{0,-20}{1,10:F5}{2,10:F5}{3,8:F2} {4,7:F4}",
+                    // Name, usually the name of the variable:
+                    parameter.Name,
+                    // Estimated value of the parameter:
+                    parameter.Value,
+                    // Standard error:
+                    parameter.StandardError,
+                    // The value of the t statistic for the hypothesis that the parameter
+                    // is zero.
+                    parameter.Statistic,
+                    // Probability corresponding to the t statistic.
+                    parameter.PValue);
+
+            Console.WriteLine("Error variance: {0:F4}", arimam.ErrorVariance);
+
+            Console.WriteLine("Log-likelihood: {0:F4}", arimam.LogLikelihood);
+            Console.WriteLine("AIC: {0:F5}", arimam.GetAkaikeInformationCriterion());
+            Console.WriteLine("BIC: " + arimam.GetBayesianInformationCriterion());
+
+            //using (var writer = new StreamWriter(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\shit3.csv"))
+            //using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+
+            //    foreach (var value in testList)
+            //    {
+            //        csv.WriteField(value);
+            //        csv.NextRecord();
+            //        // csv.WriteRecords(testList.ToArray());
+            //        writer.Flush();
+            //    }
         }
     }
     }
