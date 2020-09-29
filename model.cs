@@ -16,6 +16,7 @@ namespace consoletester
         public dynamic tempSet;
         List<double> diff = new List<double>();
         List<double> tempList = new List<double>();
+        public double doubleNumber;
 
         public List<double> difference() {
             int header = 1;
@@ -36,35 +37,40 @@ namespace consoletester
                     continue;
                 }
                 tempList.Add(double.Parse(temp.Temp.Trim('"','\'')));
+
+                Console.WriteLine(double.Parse(temp.Temp.Trim(new char[] {'"'}), NumberFormatInfo.InvariantInfo));
+
+                //Console.WriteLine(temp.Temp.Trim);
             }
 
 
 
-                for (int i = 1; i < tempList.Count; i++) 
+                for (int i = 365; i < tempList.Count; i++) 
             {
                 double value = tempList[i] - tempList[i - interval];
                 diff.Add(value);
+                //Console.WriteLine(value);
             }
                         
             return diff;
 
          }
-        //public void testMethod()
-        //{
-        //    model md = new model();
-        //    List<double> testList = md.difference();
-        //    using (var writer = new StreamWriter(@"C:\Users\Michael\PycharmProjects\testExample\shit.csv"))
-        //    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        public void testMethod()
+        {
+            model md = new model();
+            List<double> testList = md.difference();
+            using (var writer = new StreamWriter(@"C:\Users\Michael\PycharmProjects\testExample\shit2.csv"))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
 
-        //        foreach (var value in testList)
-        //    {
-        //            csv.WriteField(value);
-        //            csv.NextRecord();
-        //            // csv.WriteRecords(testList.ToArray());
-        //            writer.Flush();
-        //        }
-        //}
+                foreach (var value in testList)
+                {
+                    csv.WriteField(value);
+                    csv.NextRecord();
+                    // csv.WriteRecords(testList.ToArray());
+                    writer.Flush();
+                }
         }
+    }
     }
    
 
