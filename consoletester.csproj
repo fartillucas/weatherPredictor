@@ -12,4 +12,10 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.ApplicationBlocks.Data">
+      <HintPath>E:\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
