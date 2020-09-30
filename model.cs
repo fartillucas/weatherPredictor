@@ -72,14 +72,12 @@ namespace consoletester
             {
                 var value = tempList[i] - tempList[i - interval];
                 diff.Add(value);
-                //Console.WriteLine(value);
             }
             return diff;
         }
 
         public double inverse(double[] history, double yhat, int interval = 1)
         {
-
             return yhat + history[^interval];
         }
 
@@ -94,21 +92,8 @@ namespace consoletester
             }
         }
 
-        [Obsolete]
-        public void testMethod()
+        public void SummarizeArima(ArimaModel arimam)
         {
-            model md = new model();
-            List<decimal> testList = md.difference(365, @"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\trainData.csv");
-            double[] myArray = md.convertDecimalListToDoubleArray(testList);
-
-            List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
-            //double[] mytemparray = templist2.ToArray();
-
-            ArimaModel arimam = new ArimaModel(myArray, 7, 0, 1);
-            arimam.EstimateMean = true;
-            arimam.Compute();
-
-
             Console.WriteLine("Variable              Value    Std.Error  t-stat  p-Value");
             foreach (Parameter parameter in arimam.Parameters)
                 // Parameter objects have the following properties:
@@ -129,11 +114,29 @@ namespace consoletester
             Console.WriteLine("Log-likelihood: {0:F4}", arimam.LogLikelihood);
             Console.WriteLine("AIC: {0:F5}", arimam.GetAkaikeInformationCriterion());
             Console.WriteLine("BIC: " + arimam.GetBayesianInformationCriterion());
+        }
+
+        [Obsolete]
+        public void testMethod()
+        {
+            model md = new model();
+            List<decimal> testList = md.difference(365, @"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\trainData.csv");
+            double[] myArray = md.convertDecimalListToDoubleArray(testList);
+
+            List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
+            //double[] mytemparray = templist2.ToArray();
+
+            ArimaModel arimam = new ArimaModel(myArray, 7, 0, 1);
+            arimam.EstimateMean = true;
+            arimam.Compute();
+            md.SummarizeArima(arimam);
+
+
 
             double forecast = arimam.Forecast();
 
             Vector<double> multipleForecast = arimam.Forecast(7);
-            double[] localTempList = md.convertDecimalListToDobuleList(md.getTempList()).ToArray();
+            double[] localTempList = md.convertDecimalListToDoubleArray(md.getTempList());
             double[] mytemparray = (from x in localTempList select x).ToArray();
 
             int days = 365;
