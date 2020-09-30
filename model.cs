@@ -27,7 +27,7 @@ namespace consoletester
         }
 
         //method til at konventere dataset fra decimal til double list
-        public List<double> converListToDobule(List<decimal> listToBeConverted)
+        public List<double> convertDecimalListToDobuleList(List<decimal> listToBeConverted)
         {
             List<double> returnList = new List<double>();
             for (int i = 0; i < listToBeConverted.Count; i++)
@@ -36,6 +36,13 @@ namespace consoletester
             }
             return returnList;
         }
+
+        public double[] convertDecimalListToDoubleArray(List<decimal> listToBeConverted)
+        {
+            return convertDecimalListToDobuleList(listToBeConverted).ToArray();
+        }
+
+
 
         public List<decimal> difference(int interval)
         {
@@ -82,10 +89,9 @@ namespace consoletester
         {
             model md = new model();
             List<decimal> testList = md.difference(365);
-            List<double> inputList = md.converListToDobule(testList);
-            double[] myArray = inputList.ToArray();
+            double[] myArray = md.convertDecimalListToDoubleArray(testList);
 
-            List<double> templist2 = md.converListToDobule(md.getTempList());
+            List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
             //double[] mytemparray = templist2.ToArray();
 
             ArimaModel arimam = new ArimaModel(myArray, 7, 0, 1);
@@ -117,7 +123,7 @@ namespace consoletester
             double forecast = arimam.Forecast();
 
             Vector<double> multipleForecast = arimam.Forecast(7);
-            double[] localTempList = md.converListToDobule(md.getTempList()).ToArray();
+            double[] localTempList = md.convertDecimalListToDobuleList(md.getTempList()).ToArray();
             double[] mytemparray = (from x in localTempList select x).ToArray();
 
             Console.WriteLine(mytemparray.Length);
