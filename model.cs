@@ -15,7 +15,6 @@ namespace consoletester
     public class model
     {
         public string[] dataSet;
-        public int interval = 1;
         public dynamic tempSet;
         List<decimal> diff = new List<decimal>();
         List<decimal> tempList = new List<decimal>();
@@ -43,7 +42,7 @@ namespace consoletester
         }
 
 
-        public List<decimal> difference(int interval, string filePath)
+        public List<decimal> difference(string filePath, int interval = 1)
         {
             int header = 1;
             dataSet = File.ReadAllLines(filePath); //(@"C:\Users\farti\Source\Repos\weatherPredictor\trainData.csv");
@@ -116,7 +115,7 @@ namespace consoletester
         public void testMethod()
         {
             model md = new model();
-            List<decimal> testList = md.difference(365, @"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\trainData.csv");
+            List<decimal> testList = md.difference(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\trainData.csv", 365);
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
 
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
