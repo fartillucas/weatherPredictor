@@ -127,8 +127,6 @@ namespace consoletester
             arimam.Compute();
             md.SummarizeArima(arimam);
 
-
-
             double forecast = arimam.Forecast();
 
             Vector<double> multipleForecast = arimam.Forecast(7);
@@ -136,14 +134,7 @@ namespace consoletester
             double[] mytemparray = (from x in localTempList select x).ToArray();
 
             int days = 365;
-            for (int i = 0; i < multipleForecast.Length; i++)
-            {
-                double forecasts = inverse(mytemparray, multipleForecast[i], days);
-                mytemparray.Append(forecasts);
-                Console.WriteLine(forecasts);
-                days--;
-            }
-
+            md.ShowMultiStepForecast(mytemparray, multipleForecast, days);
 
 
             //forecast = inverse(mytemparray, forecast, 365);
