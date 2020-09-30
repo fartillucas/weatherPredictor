@@ -82,7 +82,7 @@ namespace consoletester
             {
                 double forecasts = inverse(dataSet, multipleForecast[i], interval);
                 dataSet.Append(forecasts);
-                Console.WriteLine(forecasts);
+                Console.WriteLine("day " + (i + 1) + ": " + forecasts);
                 interval--;
             }
         }
