@@ -8,6 +8,7 @@ using Extreme.Statistics.TimeSeriesAnalysis;
 using Extreme.Mathematics;
 using Extreme.Statistics;
 using Extreme.DataAnalysis;
+using System.Runtime.InteropServices;
 
 namespace consoletester
 {
@@ -19,24 +20,31 @@ namespace consoletester
         List<decimal> diff = new List<decimal>();
         List<decimal> tempList = new List<decimal>();
 
-            public List<double> converListToDobule(List<decimal> listToBeConverted)
-            {
-            List<double> returnList = new List<double>();
-                for(int i=0; i<listToBeConverted.Count; i++)
-                {
-                returnList.Add(Decimal.ToDouble(listToBeConverted[i]));
-                }
-                return returnList;
-            }
+        public List<decimal> getTempList()
+        {
+            return tempList;
+        }
 
-             public List<decimal> difference(int interval) {
+
+        public List<double> converListToDobule(List<decimal> listToBeConverted)
+        {
+            List<double> returnList = new List<double>();
+            for (int i = 0; i < listToBeConverted.Count; i++)
+            {
+                returnList.Add(Decimal.ToDouble(listToBeConverted[i]));
+            }
+            return returnList;
+        }
+
+        public List<decimal> difference(int interval)
+        {
             int header = 1;
-            
+
             dataSet = File.ReadAllLines(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\trainData.csv");
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
                        select new
-                       {   
+                       {
                            Temp = data[1],
 
 
@@ -44,18 +52,14 @@ namespace consoletester
             foreach (var temp in tempSet)
             {
                 if (header == 1)
-                {   
+                {
                     header++;
                     continue;
                 }
                 tempList.Add(decimal.Parse(temp.Temp.Trim('"'), NumberFormatInfo.InvariantInfo));
-
-                //Console.WriteLine(decimal.Parse(temp.Temp.Trim(new char[] {'"'}), NumberFormatInfo.InvariantInfo));
-
-                //Console.WriteLine(tempList.Count());
             }
 
-                
+
             foreach (var i in Enumerable.Range(interval, tempList.Count - interval))
             {
                 var value = tempList[i] - tempList[i - interval];
@@ -63,12 +67,14 @@ namespace consoletester
                 //Console.WriteLine(value);
             }
             return diff;
-         }
-        public int inverse(double[] history,double yhat, int interval)   {
-            
-            return Convert.ToInt32(yhat + history[-interval]);
         }
-        
+
+        public double inverse(double[] history, double yhat, int interval = 1)
+        {
+
+            return yhat + history[^interval];
+        }
+
 
         [Obsolete]
         public void testMethod()
@@ -76,17 +82,11 @@ namespace consoletester
             model md = new model();
             List<decimal> testList = md.difference(365);
             List<double> inputList = md.converListToDobule(testList);
-
-            for(int i=0; i<inputList.Count; i++)
-            {
-                Console.WriteLine(inputList[i]);
-            }
-
             double[] myArray = inputList.ToArray();
-            //for (int i = 0; i < myArray.Length; i++)
-            //{
-            //    Console.WriteLine(myArray[i]);
-            //}
+
+            List<double> templist2 = md.converListToDobule(md.getTempList());
+            double[] mytemparray = templist2.ToArray();
+
             ArimaModel arimam = new ArimaModel(myArray, 7, 0, 1);
             arimam.EstimateMean = true;
             arimam.Compute();
@@ -113,9 +113,24 @@ namespace consoletester
             Console.WriteLine("AIC: {0:F5}", arimam.GetAkaikeInformationCriterion());
             Console.WriteLine("BIC: " + arimam.GetBayesianInformationCriterion());
 
-            double nextValue = arimam.Forecast(Convert.ToInt32(myArray.Length));
+            double forecast = arimam.Forecast();
 
-            Console.WriteLine(nextValue + " PENIS");
+            Vector<double> multipleForecast = arimam.Forecast(7);
+
+            for (int i = 0; i < multipleForecast.Count; i++)
+            {
+                double forecasts = inverse(mytemparray, multipleForecast[i], 365);
+                Console.WriteLine(forecasts);
+            }
+
+            //forecast = inverse(mytemparray, forecast, 365);
+            //Console.WriteLine(forecast + " forecast test");
+
+            //Vector<double> nextValue = arimam.Forecast(myArray.Length);
+
+            //Console.WriteLine(nextValue + " Test");
+
+
 
             //using (var writer = new StreamWriter(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\shit3.csv"))
             //using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
@@ -129,6 +144,6 @@ namespace consoletester
             //    }
         }
     }
-    }
-   
+}
+
 
