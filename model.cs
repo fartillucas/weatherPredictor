@@ -19,24 +19,25 @@ namespace consoletester
         List<decimal> diff = new List<decimal>();
         List<decimal> tempList = new List<decimal>();
 
-            public List<double> converListToDobule(List<decimal> listToBeConverted)
-            {
+        public List<double> converListToDobule(List<decimal> listToBeConverted)
+        {
             List<double> returnList = new List<double>();
-                for(int i=0; i<listToBeConverted.Count; i++)
-                {
+            for (int i = 0; i < listToBeConverted.Count; i++)
+            {
                 returnList.Add(Decimal.ToDouble(listToBeConverted[i]));
-                }
-                return returnList;
             }
+            return returnList;
+        }
 
-             public List<decimal> difference(int interval) {
+        public List<decimal> difference(int interval)
+        {
             int header = 1;
-            
+
             dataSet = File.ReadAllLines(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\trainData.csv");
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
                        select new
-                       {   
+                       {
                            Temp = data[1],
 
 
@@ -44,7 +45,7 @@ namespace consoletester
             foreach (var temp in tempSet)
             {
                 if (header == 1)
-                {   
+                {
                     header++;
                     continue;
                 }
@@ -55,7 +56,7 @@ namespace consoletester
                 //Console.WriteLine(tempList.Count());
             }
 
-                
+
             foreach (var i in Enumerable.Range(interval, tempList.Count - interval))
             {
                 var value = tempList[i] - tempList[i - interval];
@@ -63,12 +64,13 @@ namespace consoletester
                 //Console.WriteLine(value);
             }
             return diff;
-         }
-        public int inverse(double[] history,double yhat, int interval)   {
-            
+        }
+        public int inverse(double[] history, double yhat, int interval)
+        {
+
             return Convert.ToInt32(yhat + history[-interval]);
         }
-        
+
 
         [Obsolete]
         public void testMethod()
@@ -77,7 +79,7 @@ namespace consoletester
             List<decimal> testList = md.difference(365);
             List<double> inputList = md.converListToDobule(testList);
 
-            for(int i=0; i<inputList.Count; i++)
+            for (int i = 0; i < inputList.Count; i++)
             {
                 Console.WriteLine(inputList[i]);
             }
@@ -129,6 +131,6 @@ namespace consoletester
             //    }
         }
     }
-    }
-   
+}
+
 
