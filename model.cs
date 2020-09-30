@@ -44,11 +44,11 @@ namespace consoletester
 
 
 
-        public List<decimal> difference(int interval)
+        public List<decimal> difference(int interval, string filePath)
         {
             int header = 1;
 
-            dataSet = File.ReadAllLines(@"C:\Users\farti\Source\Repos\weatherPredictor\trainData.csv");
+            dataSet = File.ReadAllLines(filePath);//(@"C:\Users\farti\Source\Repos\weatherPredictor\trainData.csv");
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
                        select new
@@ -83,12 +83,22 @@ namespace consoletester
             return yhat + history[^interval];
         }
 
+        public void ShowMultiStepForecast(double[] dataSet, Vector<double> multipleForecast, int interval)
+        {
+            for (int i = 0; i < multipleForecast.Length; i++)
+            {
+                double forecasts = inverse(dataSet, multipleForecast[i], interval);
+                dataSet.Append(forecasts);
+                Console.WriteLine(forecasts);
+                interval--;
+            }
+        }
 
         [Obsolete]
         public void testMethod()
         {
             model md = new model();
-            List<decimal> testList = md.difference(365);
+            List<decimal> testList = md.difference(365, @"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\trainData.csv");
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
 
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
@@ -126,11 +136,9 @@ namespace consoletester
             double[] localTempList = md.convertDecimalListToDobuleList(md.getTempList()).ToArray();
             double[] mytemparray = (from x in localTempList select x).ToArray();
 
-            Console.WriteLine(mytemparray.Length);
             int days = 365;
             for (int i = 0; i < multipleForecast.Length; i++)
             {
-                Console.WriteLine(multipleForecast[i]);
                 double forecasts = inverse(mytemparray, multipleForecast[i], days);
                 mytemparray.Append(forecasts);
                 Console.WriteLine(forecasts);
