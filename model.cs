@@ -43,19 +43,15 @@ namespace consoletester
         }
 
 
-
         public List<decimal> difference(int interval, string filePath)
         {
             int header = 1;
-
-            dataSet = File.ReadAllLines(filePath);//(@"C:\Users\farti\Source\Repos\weatherPredictor\trainData.csv");
+            dataSet = File.ReadAllLines(filePath); //(@"C:\Users\farti\Source\Repos\weatherPredictor\trainData.csv");
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
                        select new
                        {
-                           Temp = data[1],
-
-
+                           Temp = data[1]
                        });
             foreach (var temp in tempSet)
             {
