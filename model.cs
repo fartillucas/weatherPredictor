@@ -20,12 +20,13 @@ namespace consoletester
         List<decimal> diff = new List<decimal>();
         List<decimal> tempList = new List<decimal>();
 
+        //getter method til dataset
         public List<decimal> getTempList()
         {
             return tempList;
         }
 
-
+        //method til at konventere dataset fra decimal til double list
         public List<double> converListToDobule(List<decimal> listToBeConverted)
         {
             List<double> returnList = new List<double>();
