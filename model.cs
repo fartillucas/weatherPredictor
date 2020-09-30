@@ -40,7 +40,7 @@ namespace consoletester
         {
             int header = 1;
 
-            dataSet = File.ReadAllLines(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\trainData.csv");
+            dataSet = File.ReadAllLines(@"C:\Users\farti\Source\Repos\weatherPredictor\trainData.csv");
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
                        select new
@@ -85,7 +85,7 @@ namespace consoletester
             double[] myArray = inputList.ToArray();
 
             List<double> templist2 = md.converListToDobule(md.getTempList());
-            double[] mytemparray = templist2.ToArray();
+            //double[] mytemparray = templist2.ToArray();
 
             ArimaModel arimam = new ArimaModel(myArray, 7, 0, 1);
             arimam.EstimateMean = true;
@@ -116,12 +116,21 @@ namespace consoletester
             double forecast = arimam.Forecast();
 
             Vector<double> multipleForecast = arimam.Forecast(7);
+            double[] localTempList = md.converListToDobule(md.getTempList()).ToArray();
+            double[] mytemparray = (from x in localTempList select x).ToArray();
 
-            for (int i = 0; i < multipleForecast.Count; i++)
+            Console.WriteLine(mytemparray.Length);
+            int days = 365;
+            for (int i = 0; i < multipleForecast.Length; i++)
             {
-                double forecasts = inverse(mytemparray, multipleForecast[i], 365);
+                Console.WriteLine(multipleForecast[i]);
+                double forecasts = inverse(mytemparray, multipleForecast[i], days);
+                mytemparray.Append(forecasts);
                 Console.WriteLine(forecasts);
+                days--;
             }
+
+
 
             //forecast = inverse(mytemparray, forecast, 365);
             //Console.WriteLine(forecast + " forecast test");
