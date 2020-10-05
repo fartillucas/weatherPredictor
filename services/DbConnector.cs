@@ -1,9 +1,13 @@
-﻿using System;
+﻿using CsvHelper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Windows.Markup;
 
 namespace consoletester.services
 {
@@ -41,8 +45,30 @@ namespace consoletester.services
             }
         }
 
+        public void GetTemperatureFromObservations()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06119 AND Isvalid=1 AND ParameterId='temp_mean_past1h'", conn);
+
+
+                {
+                    conn.Open();
+                    using SqlDataReader reader = cmd.ExecuteReader();
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualdata.csv"))
+                    {
+                        while (reader.Read())
+
+                            writer.WriteLine("{0}, {1}",
+                                    reader["Observed"], reader["Value"]);
+                    }
+
+                }
 
 
 
+
+            }
+        }
     }
 }

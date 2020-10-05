@@ -28,7 +28,7 @@ namespace consoletester
             //ml.testMethod();
 
             DbConnector dc = new DbConnector();
-            dc.GetAllFromParameters();
+            dc.GetTemperatureFromObservations();
         }
     }
 }
