@@ -115,7 +115,7 @@ namespace consoletester
         public void testMethod()
         {
             model md = new model();
-            List<decimal> testList = md.difference(@"C:\Users\Michael\source\repos\consoletester\trainData.csv", 365);
+            List<decimal> testList = md.difference(@"C:\Users\Michael\source\repos\consoletester\actualdata.csv", 365 * 24);
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
 
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
@@ -128,33 +128,36 @@ namespace consoletester
 
             double forecast = arimam.Forecast();
 
-            Vector<double> multipleForecast = arimam.Forecast(7);
+
+            Vector<double> multipleForecast = arimam.Forecast(24);
             double[] localTempList = md.convertDecimalListToDoubleArray(md.getTempList());
             double[] mytemparray = (from x in localTempList select x).ToArray();
 
-            int days = 365;
+            int days = 365 * 24;
             md.ShowMultiStepForecast(mytemparray, multipleForecast, days);
 
 
-            //forecast = inverse(mytemparray, forecast, 365);
-            //Console.WriteLine(forecast + " forecast test");
+            forecast = inverse(mytemparray, forecast, 365 * 24);
+            Console.WriteLine(forecast + " forecast test");
 
-            //Vector<double> nextValue = arimam.Forecast(myArray.Length);
+            Vector<double> nextValue = arimam.Forecast(myArray.Length);
+            // for (int i = 0; i < myArray.Length; i++)
+            //Console.WriteLine(myArray[i]);
 
-            //Console.WriteLine(nextValue + " Test");
+            Console.WriteLine(nextValue + " Test");
 
 
 
-            //using (var writer = new StreamWriter(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\shit3.csv"))
-            //using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            using (var writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\shit3.csv"))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
 
-            //    foreach (var value in testList)
-            //    {
-            //        csv.WriteField(value);
-            //        csv.NextRecord();
-            //        // csv.WriteRecords(testList.ToArray());
-            //        writer.Flush();
-            //    }
+                foreach (var value in testList)
+                {
+                    csv.WriteField(value);
+                    csv.NextRecord();
+                    // csv.WriteRecords(testList.ToArray());
+                    writer.Flush();
+                }
         }
     }
 }

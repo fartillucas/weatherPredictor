@@ -49,7 +49,7 @@ namespace consoletester.services
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
-                SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06119 AND Isvalid=1 AND ParameterId='temp_mean_past1h'", conn);
+                SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06079 AND Isvalid=1 AND ParameterId='temp_mean_past1h' Order by Observed", conn);
 
 
                 {
