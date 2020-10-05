@@ -45,7 +45,7 @@ namespace consoletester
         public List<decimal> difference(string filePath, int interval = 1)
         {
             int header = 1;
-            dataSet = File.ReadAllLines(filePath); //(@"C:\Users\farti\Source\Repos\weatherPredictor\trainData.csv");
+            dataSet = File.ReadAllLines(filePath); //(@"C:\Users\Michael\source\repos\consoletester\trainData.csv");
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
                        select new
@@ -115,7 +115,7 @@ namespace consoletester
         public void testMethod()
         {
             model md = new model();
-            List<decimal> testList = md.difference(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\trainData.csv", 365);
+            List<decimal> testList = md.difference(@"C:\Users\Michael\source\repos\consoletester\trainData.csv", 365);
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
 
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());

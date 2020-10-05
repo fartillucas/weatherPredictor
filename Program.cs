@@ -1,5 +1,7 @@
-﻿using System;
+﻿using consoletester.services;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,9 +24,11 @@ namespace consoletester
             //    tts.SaveToCsv();
             //}
 
-            model ml = new model();
-            ml.testMethod();
+            //model ml = new model();
+            //ml.testMethod();
 
+            DbConnector dc = new DbConnector();
+            dc.GetAllFromParameters();
         }
     }
 }

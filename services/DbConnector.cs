@@ -1,34 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Text;
+using System.Linq;
+using System.Web;
 
 namespace consoletester.services
 {
-    class DbConnector
+    public class DbConnector
     {
-        private static void OpenSqlConnection()
+        string ConnectionString = "Server=akctest01.database.windows.net;Database=akctestdb01;uid=DMIuserLogin;password=DmiLogin34!DK;Trusted_Connection=false";
+
+        public void GetAllFromParameters()
         {
-            string connectionString = GetConnectionString();
-
-            using (SqlConnection connection = new SqlConnection())
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
-                connection.ConnectionString = connectionString;
+                SqlCommand cmd = new SqlCommand("Select * from parameters", conn);
 
-                connection.Open();
+                try
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        while (reader.Read())
+                        {
+                            var number = reader["Number"].ToString();
+                            var desc = reader["Description"].ToString();
+                            var Parid = reader["ParameterId"].ToString();
+                            var unit = reader["Unit"].ToString();
 
-                Console.WriteLine("State: {0}", connection.State);
-                Console.WriteLine("ConnectionString: {0}",
-                    connection.ConnectionString);
+                            Console.WriteLine(number + " " + desc + " " + Parid + " " + unit);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
 
-        static private string GetConnectionString()
-        {
-            // To avoid storing the connection string in your code,
-            // you can retrieve it from a configuration file.
-            return "Data Source=MSSQL1;Initial Catalog=AdventureWorks;"
-                + "Integrated Security=true;";
-        }
+
+
+
     }
 }
