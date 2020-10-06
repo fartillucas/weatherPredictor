@@ -13,6 +13,7 @@ namespace consoletester.services
 {
     public class DbConnector
     {
+        public string StationName { get; set; }
         string ConnectionString = "Server=akctest01.database.windows.net;Database=akctestdb01;uid=DMIuserLogin;password=DmiLogin34!DK;Trusted_Connection=false";
 
         public void GetAllFromParameters()
@@ -55,12 +56,89 @@ namespace consoletester.services
                 {
                     conn.Open();
                     using SqlDataReader reader = cmd.ExecuteReader();
-                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualdata.csv"))
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\farti\Source\Repos\weatherPredictor\actualdata.csv"))
                     {
                         while (reader.Read())
 
-                            writer.WriteLine("{0}, {1}",
+                            writer.WriteLine("{ 0}, {1}",
                                     reader["Observed"], reader["Value"]);
+                    }
+
+                }
+
+
+
+
+            }
+        }
+        public void GetAlarmsFromAlarms()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("select AlarmCount, DateKey from Alarms where StationId=06079 AND Isvalid=1 Order by StationId", conn);
+
+
+                {
+                    conn.Open();
+                    using SqlDataReader reader = cmd.ExecuteReader();
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\farti\Source\Repos\weatherPredictor\AlarmData.csv"))
+                    {
+                        while (reader.Read())
+
+                            writer.WriteLine("{ 0}, {1}, {2}",
+                                    reader["DateKey"], reader["AlarmCount"], reader["StationId"]);
+                    }
+
+                }
+
+
+
+
+            }
+        }
+        public void SaveCustomDataset()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT Observed, max(case when Observations.ParameterId= 'temp_mean_past1h' then Observations.Value end) as TempMean, max(case when Observations.ParameterId= 'humidity_past1h' then Observations.Value end) as Humidty, max(case when Observations.ParameterId= 'pressure_at_sea' then Observations.Value end) as Pressure, max(case when Observations.ParameterId= 'temp_min_past1h' then Observations.Value end) as TempMin,	max(case when Observations.ParameterId= 'temp_max_past1h' then Observations.Value end) as TempMax from Observations	where StationId=06123 Group by Observed	order by Observed", conn);
+
+
+                {
+                    conn.Open();
+                    using SqlDataReader reader = cmd.ExecuteReader();
+
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\farti\Source\Repos\weatherPredictor\HourlyValues.csv"))
+                    {
+                        while (reader.Read())
+
+                            writer.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}",
+                                    reader["Observed"], reader["TempMean"], reader["Humidty"], reader["Pressure"], reader["TempMin"], reader["TempMax"]);
+                    }
+
+                }
+
+
+
+
+            }
+        }
+        public void SavedailyDataset()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT Datekey, AVG(ALL case when Observations.ParameterId='temp_mean_past1h' then Observations.Value end) as TempMean, AVG(ALL case when Observations.ParameterId= 'humidity_past1h' then Observations.Value end) as Humidty, AVG(ALL case when Observations.ParameterId= 'pressure_at_sea' then Observations.Value end) as Pressure, min(ALL case when Observations.ParameterId= 'temp_min_past1h' then Observations.Value end) as TempMin, max(ALL case when Observations.ParameterId= 'temp_max_past1h' then Observations.Value end) as TempMax FROM Observations where StationId=06123 Group by DateKey order by Datekey", conn);
+
+
+                {
+                    conn.Open();
+                    using SqlDataReader reader = cmd.ExecuteReader();
+
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\farti\Source\Repos\weatherPredictor\dailyValues.csv"))
+                    {
+                        while (reader.Read())
+
+                            writer.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}",
+                                    reader["Datekey"], reader["TempMean"], reader["Humidty"], reader["Pressure"], reader["TempMin"], reader["TempMax"]);
                     }
 
                 }
