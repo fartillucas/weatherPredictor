@@ -28,7 +28,9 @@ namespace consoletester
             //ml.testMethod();
 
             DbConnector dc = new DbConnector();
-            dc.SavedailyDataset();
+            //dc.SavedailyDatasetWithDate();
+            //dc.SavedailyDataset();
+            dc.SaveAlarmDataset();
         }
     }
 }
