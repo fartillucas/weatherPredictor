@@ -24,13 +24,14 @@ namespace consoletester
             //    tts.SaveToCsv();
             //}
 
-            //model ml = new model();
-            //ml.testMethod();
+            model ml = new model();
+            ml.testMethod();
 
             DbConnector dc = new DbConnector();
             //dc.SavedailyDatasetWithDate();
             //dc.SavedailyDataset();
-            dc.SaveAlarmDataset();
+            //dc.SaveAlarmDataset();
+            //dc.GetHumidityFromObservations();
         }
     }
 }

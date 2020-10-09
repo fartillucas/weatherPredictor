@@ -115,7 +115,7 @@ namespace consoletester
         public void testMethod()
         {
             model md = new model();
-            List<decimal> testList = md.difference(@"C:\Users\farti\Source\Repos\weatherPredictor\actualdata.csv", 365 * 24);
+            List<decimal> testList = md.difference(@"C:\Users\Michael\source\repos\consoletester\actualdata.csv", 365 * 24);
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
 
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
@@ -148,7 +148,7 @@ namespace consoletester
 
 
 
-            using (var writer = new StreamWriter(@"C:\Users\farti\Source\Repos\weatherPredictor\shit3.csv"))
+            using (var writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\shit3.csv"))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
 
                 foreach (var value in testList)

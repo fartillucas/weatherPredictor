@@ -199,6 +199,107 @@ namespace consoletester.services
 
             }
         }
+        public void GetHumidityFromObservations()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06079 AND Isvalid=1 AND ParameterId='humidity_past1h' Order by Observed", conn);
+
+
+                {
+                    conn.Open();
+                    using SqlDataReader reader = cmd.ExecuteReader();
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualhumdata.csv"))
+                    {
+                        while (reader.Read())
+
+                            writer.WriteLine("{0}, {1}",
+                                    reader["Observed"], reader["Value"]);
+                    }
+
+                }
+
+
+
+
+            }
+        }
+        public void GetPressureFromObservations()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06079 AND Isvalid=1 AND ParameterId='pressure_at_sea' Order by Observed", conn);
+
+
+                {
+                    conn.Open();
+                    using SqlDataReader reader = cmd.ExecuteReader();
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualPresdata.csv"))
+                    {
+                        while (reader.Read())
+
+                            writer.WriteLine("{0}, {1}",
+                                    reader["Observed"], reader["Value"]);
+                    }
+
+                }
+
+
+
+
+            }
+        }
+        public void GetMinTempFromObservations()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06079 AND Isvalid=1 AND ParameterId='temp_min_past1h' Order by Observed", conn);
+
+
+                {
+                    conn.Open();
+                    using SqlDataReader reader = cmd.ExecuteReader();
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualMinsdata.csv"))
+                    {
+                        while (reader.Read())
+
+                            writer.WriteLine("{0}, {1}",
+                                    reader["Observed"], reader["Value"]);
+                    }
+
+                }
+
+
+
+
+            }
+        }
+
+        public void GetMaxTempFromObservations()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06079 AND Isvalid=1 AND ParameterId='temp_max_past1h' Order by Observed", conn);
+
+
+                {
+                    conn.Open();
+                    using SqlDataReader reader = cmd.ExecuteReader();
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualMaxdata.csv"))
+                    {
+                        while (reader.Read())
+
+                            writer.WriteLine("{0}, {1}",
+                                    reader["Observed"], reader["Value"]);
+                    }
+
+                }
+
+
+
+
+            }
+        }
 
 
     }
