@@ -24,10 +24,13 @@ namespace consoletester
             //    tts.SaveToCsv();
             //}
 
-            model ml = new model();
-            ml.testMethod();
+            //model ml = new model();
+            //ml.testMethod();
 
             DbConnector dc = new DbConnector();
+            //dc.GetPressureFromObservations();
+            //dc.GetMaxTempFromObservations();
+            //dc.GetMinTempFromObservations();
             //dc.SavedailyDatasetWithDate();
             //dc.SavedailyDataset();
             //dc.SaveAlarmDataset();
