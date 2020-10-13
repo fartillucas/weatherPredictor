@@ -115,13 +115,13 @@ namespace consoletester
         public void testMethod()
         {
             model md = new model();
-            List<decimal> testList = md.difference(@"C:\Users\Michael\source\repos\consoletester\actualdata.csv", 365 * 24);
+            List<decimal> testList = md.difference(@"C:\Users\Michael\source\repos\consoletester\autoarima.csv", 365);
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
 
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
             //double[] mytemparray = templist2.ToArray();
 
-            ArimaModel arimam = new ArimaModel(myArray, 7, 0, 1);
+            ArimaModel arimam = new ArimaModel(myArray, 4, 0, 1);
             arimam.EstimateMean = true;
             arimam.Compute();
             md.SummarizeArima(arimam);
@@ -129,15 +129,15 @@ namespace consoletester
             double forecast = arimam.Forecast();
 
 
-            Vector<double> multipleForecast = arimam.Forecast(24);
+            Vector<double> multipleForecast = arimam.Forecast(7);
             double[] localTempList = md.convertDecimalListToDoubleArray(md.getTempList());
             double[] mytemparray = (from x in localTempList select x).ToArray();
 
-            int days = 365 * 24;
+            int days = 365;
             md.ShowMultiStepForecast(mytemparray, multipleForecast, days);
 
 
-            forecast = inverse(mytemparray, forecast, 365 * 24);
+            forecast = inverse(mytemparray, forecast, 365);
             Console.WriteLine(forecast + " forecast test");
 
             Vector<double> nextValue = arimam.Forecast(myArray.Length);

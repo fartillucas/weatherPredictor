@@ -1,4 +1,6 @@
 ﻿using CsvHelper;
+using Extreme.Mathematics.LinearAlgebra;
+using Extreme.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,6 +16,7 @@ namespace consoletester.services
     public class DbConnector
     {
         public string StationName { get; set; }
+        public string[] rawdata;
         string ConnectionString = "Server=akctest01.database.windows.net;Database=akctestdb01;uid=DMIuserLogin;password=DmiLogin34!DK;Trusted_Connection=false";
 
         public void GetAllFromParameters()
@@ -203,18 +206,18 @@ namespace consoletester.services
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
-                SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06079 AND Isvalid=1 AND ParameterId='humidity_past1h' Order by Observed", conn);
+                SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_mean_past1h' then Observations.Value end) as TempMean From Observations where StationId = 06123 group by DateKey order by DateKey", conn);
 
 
                 {
                     conn.Open();
                     using SqlDataReader reader = cmd.ExecuteReader();
-                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualhumdata.csv"))
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\autoarima.csv"))
                     {
                         while (reader.Read())
 
-                            writer.WriteLine("{0}, {1}",
-                                    reader["Observed"], reader["Value"]);
+                            writer.WriteLine("{0},{1}",
+                                    reader["DateKey"].ToString().Replace(',', '.'), reader["TempMean"].ToString().Replace(',', '.'));
                     }
 
                 }
@@ -268,10 +271,6 @@ namespace consoletester.services
                     }
 
                 }
-
-
-
-
             }
         }
 
@@ -286,6 +285,7 @@ namespace consoletester.services
                     conn.Open();
                     using SqlDataReader reader = cmd.ExecuteReader();
                     using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualMaxdata.csv"))
+
                     {
                         while (reader.Read())
 
@@ -294,7 +294,6 @@ namespace consoletester.services
                     }
 
                 }
-
 
 
 
