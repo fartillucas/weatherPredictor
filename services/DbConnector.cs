@@ -207,24 +207,17 @@ namespace consoletester.services
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_mean_past1h' then Observations.Value end) as TempMean From Observations where StationId = 06123 group by DateKey order by DateKey", conn);
-
-
                 {
                     conn.Open();
                     using SqlDataReader reader = cmd.ExecuteReader();
-                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\autoarima.csv"))
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\Csvs\autoarima3.csv"))
                     {
                         while (reader.Read())
-
                             writer.WriteLine("{0},{1}",
-                                    reader["DateKey"].ToString().Replace(',', '.'), reader["TempMean"].ToString().Replace(',', '.'));
+                                   reader["DateKey"].ToString().Replace(',', '.').Substring(6, 4) + "-" + reader["DateKey"].ToString().Replace(',', '.').Substring(3, 2) + "-" + reader["DateKey"].ToString().Replace(',', '.').Substring(0, 2), reader["TempMean"].ToString().Replace(',', '.'));
                     }
 
                 }
-
-
-
-
             }
         }
         public void GetPressureFromObservations()
