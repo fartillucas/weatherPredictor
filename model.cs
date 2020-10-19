@@ -59,6 +59,10 @@ namespace consoletester
                     header++;
                     continue;
                 }
+                if(string.Equals(temp.Temp, ""))
+                {
+                    continue;
+                }
                 tempList.Add(decimal.Parse(temp.Temp.Trim('"'), NumberFormatInfo.InvariantInfo));
             }
 
