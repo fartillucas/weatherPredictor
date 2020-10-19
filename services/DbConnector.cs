@@ -245,51 +245,54 @@ namespace consoletester.services
 
             }
         }
-        public void GetMinTempFromObservations()
+        public string[] GetMinTempFromObservations()
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
+                List<string> dataset = new List<string>();
+                string[] myarray;
                 SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06079 AND Isvalid=1 AND ParameterId='temp_min_past1h' Order by Observed", conn);
-
 
                 {
                     conn.Open();
                     using SqlDataReader reader = cmd.ExecuteReader();
-                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualMinsdata.csv"))
+                    dataset.Add("Observed,Value");
                     {
                         while (reader.Read())
-
-                            writer.WriteLine("{0}, {1}",
-                                    reader["Observed"], reader["Value"]);
+                        {
+                            dataset.Add($"{reader["Observed"].ToString().Replace(',', '.')},{reader["Value"].ToString().Replace(',', '.')}");
+                        }
+                        reader.Close();
+                        myarray = dataset.ToArray();
                     }
-
+                    return myarray;
                 }
             }
         }
 
-        public void GetMaxTempFromObservations()
+        public string[] GetMaxTempFromObservations()
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
+                List<string> dataset = new List<string>();
+                string[] myarray;
                 SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06079 AND Isvalid=1 AND ParameterId='temp_max_past1h' Order by Observed", conn);
-
 
                 {
                     conn.Open();
                     using SqlDataReader reader = cmd.ExecuteReader();
-                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\actualMaxdata.csv"))
+                    dataset.Add("Observed,Value");
 
                     {
                         while (reader.Read())
-
-                            writer.WriteLine("{0}, {1}",
-                                    reader["Observed"], reader["Value"]);
+                        {
+                            dataset.Add($"{reader["Observed"].ToString().Replace(',', '.')},{reader["Value"].ToString().Replace(',', '.')}");
+                        }
+                        reader.Close();
+                        myarray = dataset.ToArray();
                     }
-
+                    return myarray;
                 }
-
-
-
             }
         }
         public string[] GetDailyMeanTemperatureReading()
