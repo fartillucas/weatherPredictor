@@ -57,7 +57,7 @@ namespace consoletester
                 {
                     continue;
                 }
-                if(string.Equals(temp.Temp, ""))
+                if (string.Equals(temp.Temp, ""))
                 {
                     continue;
                 }
@@ -123,7 +123,7 @@ namespace consoletester
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
             //double[] mytemparray = templist2.ToArray();
 
-            ArimaModel arimam = new ArimaModel(myArray, 4, 0, 1);
+            ArimaModel arimam = new ArimaModel(myArray, 3, 0, 2);
             arimam.EstimateMean = true;
             arimam.Compute();
             md.SummarizeArima(arimam);
