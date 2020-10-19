@@ -23,18 +23,18 @@ namespace consoletester
             //    tts.TestSplitter();
             //    tts.SaveToCsv();
             //}
-
-            //model ml = new model();
-            //ml.testMethod();
-
             DbConnector dc = new DbConnector();
+            model ml = new model();
+            ml.testMethod(dc.GetDailyMeanTemperatureReading());
+
+
             //dc.GetPressureFromObservations();
             //dc.GetMaxTempFromObservations();
             //dc.GetMinTempFromObservations();
             //dc.SavedailyDatasetWithDate();
             //dc.SavedailyDataset();
             //dc.SaveAlarmDataset();
-            dc.GetHumidityFromObservations();
+            //dc.GetHumidityFromObservations();
         }
     }
 }

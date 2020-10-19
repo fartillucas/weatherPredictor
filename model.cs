@@ -42,10 +42,10 @@ namespace consoletester
         }
 
 
-        public List<decimal> difference(string filePath, int interval = 1)
+        public List<decimal> difference(string[] dataInput, int interval = 1)
         {
             int header = 1;
-            dataSet = File.ReadAllLines(filePath); //(@"C:\Users\Michael\source\repos\consoletester\trainData.csv");
+            dataSet = dataInput;
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
                        select new
@@ -112,10 +112,10 @@ namespace consoletester
         }
 
         [Obsolete]
-        public void testMethod()
+        public void testMethod(string[] data)
         {
             model md = new model();
-            List<decimal> testList = md.difference(@"C:\Users\Michael\source\repos\consoletester\autoarima.csv", 365);
+            List<decimal> testList = md.difference(data, 365);
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
 
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
@@ -148,16 +148,16 @@ namespace consoletester
 
 
 
-            using (var writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\shit3.csv"))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            //using (var writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\shit3.csv"))
+            //using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
 
-                foreach (var value in testList)
-                {
-                    csv.WriteField(value);
-                    csv.NextRecord();
-                    // csv.WriteRecords(testList.ToArray());
-                    writer.Flush();
-                }
+            //    foreach (var value in testList)
+            //    {
+            //        csv.WriteField(value);
+            //        csv.NextRecord();
+            //        // csv.WriteRecords(testList.ToArray());
+            //        writer.Flush();
+            //    }
         }
     }
 }

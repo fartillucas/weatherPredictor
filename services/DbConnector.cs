@@ -210,11 +210,11 @@ namespace consoletester.services
                 {
                     conn.Open();
                     using SqlDataReader reader = cmd.ExecuteReader();
-                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Asmus\Source\Repos\fartillucas\weatherPredictor\Csvs\autoarima3.csv"))
+                    using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\Csvs\Ranalytics.csv"))
                     {
                         while (reader.Read())
-                            writer.WriteLine("{0},{1}",
-                                   reader["DateKey"].ToString().Replace(',', '.').Substring(6, 4) + "-" + reader["DateKey"].ToString().Replace(',', '.').Substring(3, 2) + "-" + reader["DateKey"].ToString().Replace(',', '.').Substring(0, 2), reader["TempMean"].ToString().Replace(',', '.'));
+                            writer.WriteLine("{0}",
+                                    reader["TempMean"].ToString().Replace(',', '.'));
                     }
 
                 }
@@ -288,6 +288,35 @@ namespace consoletester.services
 
                 }
 
+
+
+            }
+        }
+        public string[] GetDailyMeanTemperatureReading()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+
+                List<string> dataset = new List<string>();
+                string[] myarray;
+
+                SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_mean_past1h' then Observations.Value end) as TempMean From Observations where StationId = 06123 group by DateKey order by DateKey", conn);
+
+
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    dataset.Add("DateKey,TempMean");
+
+                    while (reader.Read())
+                    {
+                        dataset.Add($"{reader["DateKey"].ToString().Replace(',', '.')},{reader["TempMean"].ToString().Replace(',', '.')}");
+                    }
+                    reader.Close();
+                    myarray = dataset.ToArray();
+                }
+
+                return myarray;
 
 
             }
