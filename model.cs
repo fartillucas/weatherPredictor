@@ -44,7 +44,6 @@ namespace consoletester
 
         public List<decimal> difference(string[] dataInput, int interval = 1)
         {
-            int header = 1;
             dataSet = dataInput;
             tempSet = (from temp in dataSet
                        let data = temp.Split(',')
@@ -54,9 +53,8 @@ namespace consoletester
                        });
             foreach (var temp in tempSet)
             {
-                if (header == 1)
+                if (string.Equals(temp.Temp, "Observed") || string.Equals(temp.Temp, "DateKey") || string.Equals(temp.Temp, "TempMean") || string.Equals(temp.Temp, "Alarms"))
                 {
-                    header++;
                     continue;
                 }
                 if(string.Equals(temp.Temp, ""))

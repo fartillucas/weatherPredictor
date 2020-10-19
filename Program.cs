@@ -11,6 +11,7 @@ namespace consoletester
 {
     class Program
     {
+        [Obsolete]
         static void Main(string[] args)
         {
             //Datareader dr = new Datareader();
