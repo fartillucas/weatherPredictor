@@ -27,6 +27,8 @@ namespace consoletester
             DbConnector dc = new DbConnector();
             model ml = new model();
             ml.testMethod(dc.GetDailyMeanTemperatureReading());
+            ml.testMethod(dc.GetDailyMinTempFromObservations());
+
 
 
             //dc.GetPressureFromObservations();

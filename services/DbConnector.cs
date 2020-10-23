@@ -147,7 +147,7 @@ namespace consoletester.services
             {
                 List<string> dataset = new List<string>();
                 string[] myarray;
-                SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_min_past1h' then Observations.Value end) as TempMin From Observations where StationId = 06123 group by DateKey order by DateKeyd", conn);
+                SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_min_past1h' then Observations.Value end) as TempMin From Observations where StationId = 06123 group by DateKey order by DateKey", conn);
 
                 {
                     conn.Open();

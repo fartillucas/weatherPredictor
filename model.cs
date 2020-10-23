@@ -1,28 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
-using CsvHelper;
 using System.Globalization;
 using Extreme.Statistics.TimeSeriesAnalysis;
 using Extreme.Mathematics;
-using Extreme.Statistics;
-using Extreme.DataAnalysis;
-using System.Runtime.InteropServices;
+
 
 namespace consoletester
 {
     public class model
     {
         public string[] dataSet;
-        public dynamic tempSet;
+        public dynamic tempMeanSet;
         List<decimal> diff = new List<decimal>();
-        List<decimal> tempList = new List<decimal>();
+        List<decimal> tempMeanList = new List<decimal>();
 
         //getter method til dataset
         public List<decimal> getTempList()
         {
-            return tempList;
+            return tempMeanList;
         }
 
         //method til at konventere dataset fra decimal til double list
@@ -45,15 +41,15 @@ namespace consoletester
         public List<decimal> difference(string[] dataInput, int interval = 1)
         {
             dataSet = dataInput;
-            tempSet = (from temp in dataSet
-                       let data = temp.Split(',')
-                       select new
-                       {
-                           Temp = data[1]
-                       });
-            foreach (var temp in tempSet)
+            tempMeanSet = (from tempMean in dataSet
+                           let data = tempMean.Split(',')
+                           select new
+                           {
+                               Temp = data[1]
+                           });
+            foreach (var temp in tempMeanSet)
             {
-                if (string.Equals(temp.Temp, "Observed") || string.Equals(temp.Temp, "DateKey") || string.Equals(temp.Temp, "TempMean") || string.Equals(temp.Temp, "Alarms"))
+                if (string.Equals(temp.Temp, "Observed") || string.Equals(temp.Temp, "DateKey") || string.Equals(temp.Temp, "TempMean") || string.Equals(temp.Temp, "Alarms") || string.Equals(temp.Temp, "TempMin") || string.Equals(temp.Temp, "TempMax") || string.Equals(temp.Temp, "Humidity") || string.Equals(temp.Temp, "Pressure"))
                 {
                     continue;
                 }
@@ -61,13 +57,13 @@ namespace consoletester
                 {
                     continue;
                 }
-                tempList.Add(decimal.Parse(temp.Temp.Trim('"'), NumberFormatInfo.InvariantInfo));
+                tempMeanList.Add(decimal.Parse(temp.Temp.Trim('"'), NumberFormatInfo.InvariantInfo));
             }
 
 
-            foreach (var i in Enumerable.Range(interval, tempList.Count - interval))
+            foreach (var i in Enumerable.Range(interval, tempMeanList.Count - interval))
             {
-                var value = tempList[i] - tempList[i - interval];
+                var value = tempMeanList[i] - tempMeanList[i - interval];
                 diff.Add(value);
             }
             return diff;
@@ -89,29 +85,29 @@ namespace consoletester
             }
         }
 
-        public void SummarizeArima(ArimaModel arimam)
-        {
-            Console.WriteLine("Variable              Value    Std.Error  t-stat  p-Value");
-            foreach (Parameter parameter in arimam.Parameters)
-                // Parameter objects have the following properties:
-                Console.WriteLine("{0,-20}{1,10:F5}{2,10:F5}{3,8:F2} {4,7:F4}",
-                    // Name, usually the name of the variable:
-                    parameter.Name,
-                    // Estimated value of the parameter:
-                    parameter.Value,
-                    // Standard error:
-                    parameter.StandardError,
-                    // The value of the t statistic for the hypothesis that the parameter
-                    // is zero.
-                    parameter.Statistic,
-                    // Probability corresponding to the t statistic.
-                    parameter.PValue);
+        //public void SummarizeArima(ArimaModel arimam)
+        //{
+        //    Console.WriteLine("Variable              Value    Std.Error  t-stat  p-Value");
+        //    foreach (Parameter parameter in arimam.Parameters)
+        //        // Parameter objects have the following properties:
+        //        Console.WriteLine("{0,-20}{1,10:F5}{2,10:F5}{3,8:F2} {4,7:F4}",
+        //            // Name, usually the name of the variable:
+        //            parameter.Name,
+        //            // Estimated value of the parameter:
+        //            parameter.Value,
+        //            // Standard error:
+        //            parameter.StandardError,
+        //            // The value of the t statistic for the hypothesis that the parameter
+        //            // is zero.
+        //            parameter.Statistic,
+        //            // Probability corresponding to the t statistic.
+        //            parameter.PValue);
 
-            Console.WriteLine("Error variance: {0:F4}", arimam.ErrorVariance);
-            Console.WriteLine("Log-likelihood: {0:F4}", arimam.LogLikelihood);
-            Console.WriteLine("AIC: {0:F5}", arimam.GetAkaikeInformationCriterion());
-            Console.WriteLine("BIC: " + arimam.GetBayesianInformationCriterion());
-        }
+        //    Console.WriteLine("Error variance: {0:F4}", arimam.ErrorVariance);
+        //    Console.WriteLine("Log-likelihood: {0:F4}", arimam.LogLikelihood);
+        //    Console.WriteLine("AIC: {0:F5}", arimam.GetAkaikeInformationCriterion());
+        //    Console.WriteLine("BIC: " + arimam.GetBayesianInformationCriterion());
+        //}
 
         [Obsolete]
         public void testMethod(string[] data)
@@ -126,27 +122,27 @@ namespace consoletester
             ArimaModel arimam = new ArimaModel(myArray, 3, 0, 2);
             arimam.EstimateMean = true;
             arimam.Compute();
-            md.SummarizeArima(arimam);
+            //md.SummarizeArima(arimam);
 
             double forecast = arimam.Forecast();
 
 
             Vector<double> multipleForecast = arimam.Forecast(7);
-            double[] localTempList = md.convertDecimalListToDoubleArray(md.getTempList());
-            double[] mytemparray = (from x in localTempList select x).ToArray();
+            double[] localTempMeanList = md.convertDecimalListToDoubleArray(md.getTempList());
+            double[] mytemparray = (from x in localTempMeanList select x).ToArray();
 
             int days = 365;
             md.ShowMultiStepForecast(mytemparray, multipleForecast, days);
 
 
             forecast = inverse(mytemparray, forecast, 365);
-            Console.WriteLine(forecast + " forecast test");
+            //Console.WriteLine(forecast + " forecast test");
 
             Vector<double> nextValue = arimam.Forecast(myArray.Length);
             // for (int i = 0; i < myArray.Length; i++)
             //Console.WriteLine(myArray[i]);
 
-            Console.WriteLine(nextValue + " Test");
+            //Console.WriteLine(nextValue + " Test");
 
 
 
