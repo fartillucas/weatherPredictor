@@ -166,7 +166,7 @@ namespace consoletester
             double[] mytemparray = (from x in localTempMeanList select x).ToArray();
 
             int days = 365;
-            md.ShowMultiStepForecast(mytemparray, multipleForecast, days);
+            //md.ShowMultiStepForecast(mytemparray, multipleForecast, days);
 
 
             forecast = inverse(mytemparray, forecast, 365);
