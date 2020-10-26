@@ -85,6 +85,20 @@ namespace consoletester
             }
         }
 
+        public string[] SaveMultiStepForecast(double[] dataSet, Vector<double> multipleForecast, int interval)
+        {
+            String[] returnArray = new string[multipleForecast.Length];
+            for (int i = 0; i < multipleForecast.Length; i++)
+            {
+                double forecasts = inverse(dataSet, multipleForecast[i], interval);
+                dataSet.Append(forecasts);
+                Console.WriteLine("day " + (i + 1) + ": " + forecasts);
+                returnArray[i] = ($"day {i + 1} : {forecasts}");
+                interval--;
+            }
+            return returnArray;
+        }
+
         //public void SummarizeArima(ArimaModel arimam)
         //{
         //    Console.WriteLine("Variable              Value    Std.Error  t-stat  p-Value");
@@ -108,6 +122,26 @@ namespace consoletester
         //    Console.WriteLine("AIC: {0:F5}", arimam.GetAkaikeInformationCriterion());
         //    Console.WriteLine("BIC: " + arimam.GetBayesianInformationCriterion());
         //}
+
+
+        [Obsolete]
+        public string[] CreateArimaModelWithForecast(string[] data, int daysToForecast) 
+        {
+            model md = new model();
+            List<decimal> testList = md.difference(data, 365);
+            double[] myArray = md.convertDecimalListToDoubleArray(testList);
+            List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
+
+            ArimaModel arimam = new ArimaModel(myArray, 3, 0, 2);
+            arimam.EstimateMean = true;
+            arimam.Compute();
+
+            Vector<double> multipleForecast = arimam.Forecast(daysToForecast);
+            double[] localTempMeanList = md.convertDecimalListToDoubleArray(md.getTempList());
+            double[] mytemparray = (from x in localTempMeanList select x).ToArray();
+
+            return md.SaveMultiStepForecast(mytemparray, multipleForecast, 365); 
+        }
 
         [Obsolete]
         public void testMethod(string[] data)

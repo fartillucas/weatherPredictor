@@ -221,6 +221,16 @@ namespace consoletester.services
             }
         }
 
+        public void SaveDaliyArimaForecast(string StationId, double TempMean, int Humidity, double Pressure, double TempMin, double TempMax)
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand($"INSERT INTO ForecastsFromArima(StationId, TempMean, Humidity, Pressure, TempMin, TempMax) Values({StationId},{TempMean},{Humidity},{Humidity},{Pressure},{TempMin},{TempMax})", conn);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
 
     }
 }
