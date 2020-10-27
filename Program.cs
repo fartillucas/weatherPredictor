@@ -26,11 +26,9 @@ namespace consoletester
             //}
             DbConnector dc = new DbConnector();
             model ml = new model();
-            ml.testMethod(dc.GetDailyMeanTemperatureReading());
-            ml.testMethod(dc.GetDailyMinTempFromObservations());
-
-
-
+            ml.testMethod(dc.GetDailyPressureFromObservations());
+            //  ml.testMethod(dc.GetDailyMinTempFromObservations());
+            //dc.saveLocalDataset();
             //dc.GetPressureFromObservations();
             //dc.GetMaxTempFromObservations();
             //dc.GetMinTempFromObservations();

@@ -225,12 +225,37 @@ namespace consoletester.services
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
-                SqlCommand cmd = new SqlCommand($"INSERT INTO ForecastsFromArima(StationId, TempMean, Humidity, Pressure, TempMin, TempMax) Values({StationId},{TempMean},{Humidity},{Humidity},{Pressure},{TempMin},{TempMax})", conn);
+                SqlCommand cmd = new SqlCommand($"INSERT INTO ForecastsFromArima(StationId, TempMean, Humidity, Pressure, TempMin, TempMax) Values(@StationId, @TempMean, @Humidity, @Pressure, @TempMin, @TempMax)", conn);
+                cmd.Parameters.AddWithValue("@StationId", StationId);
+                cmd.Parameters.AddWithValue("@TempMean", TempMean);
+                cmd.Parameters.AddWithValue("@Humidity", Humidity);
+                cmd.Parameters.AddWithValue("@Pressure", Pressure);
+                cmd.Parameters.AddWithValue("@TempMin", TempMin);
+                cmd.Parameters.AddWithValue("@TempMax", TempMax);
+
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
         }
+        public void saveLocalDataset()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("select Observed, Value from Observations where StationId=06079 AND Isvalid=1 AND ParameterId='humidity_past1h' Order by Observed", conn);
+                conn.Open();
+                using SqlDataReader reader = cmd.ExecuteReader();
+                using (StreamWriter writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\Csvs\humidity.csv"))
+                {
+                    while (reader.Read())
 
+                        writer.WriteLine("{0},{1}",
+
+                        reader["Observed"], reader["Value"].ToString().Replace(',', '.'));
+                }
+            }
+        }
     }
+
 }
+
