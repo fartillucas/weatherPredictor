@@ -11,14 +11,14 @@ namespace consoletester
     public class model
     {
         public string[] dataSet;
-        public dynamic tempMeanSet;
+        public dynamic temporarySet;
         List<decimal> diff = new List<decimal>();
-        List<decimal> tempMeanList = new List<decimal>();
+        List<decimal> temporaryList = new List<decimal>();
 
         //getter method til dataset
         public List<decimal> getTempList()
         {
-            return tempMeanList;
+            return temporaryList;
         }
 
         //method til at konventere dataset fra decimal til double list
@@ -41,13 +41,13 @@ namespace consoletester
         public List<decimal> difference(string[] dataInput, int interval = 1)
         {
             dataSet = dataInput;
-            tempMeanSet = (from tempMean in dataSet
-                           let data = tempMean.Split(',')
-                           select new
-                           {
-                               Temp = data[1]
-                           });
-            foreach (var temp in tempMeanSet)
+            temporarySet = (from tempMean in dataSet
+                            let data = tempMean.Split(',')
+                            select new
+                            {
+                                Temp = data[1]
+                            });
+            foreach (var temp in temporarySet)
             {
                 if (string.Equals(temp.Temp, "Observed") || string.Equals(temp.Temp, "DateKey") || string.Equals(temp.Temp, "TempMean") || string.Equals(temp.Temp, "Alarms") || string.Equals(temp.Temp, "TempMin") || string.Equals(temp.Temp, "TempMax") || string.Equals(temp.Temp, "Humidity") || string.Equals(temp.Temp, "Pressure"))
                 {
@@ -57,13 +57,13 @@ namespace consoletester
                 {
                     continue;
                 }
-                tempMeanList.Add(decimal.Parse(temp.Temp.Trim('"'), NumberFormatInfo.InvariantInfo));
+                temporaryList.Add(decimal.Parse(temp.Temp.Trim('"'), NumberFormatInfo.InvariantInfo));
             }
 
 
-            foreach (var i in Enumerable.Range(interval, tempMeanList.Count - interval))
+            foreach (var i in Enumerable.Range(interval, temporaryList.Count - interval))
             {
-                var value = tempMeanList[i] - tempMeanList[i - interval];
+                var value = temporaryList[i] - temporaryList[i - interval];
                 diff.Add(value);
             }
             return diff;
@@ -87,13 +87,13 @@ namespace consoletester
 
         public string[] SaveMultiStepForecast(double[] dataSet, Vector<double> multipleForecast, int interval)
         {
-            String[] returnArray = new string[multipleForecast.Length];
+            string[] returnArray = new string[multipleForecast.Length];
             for (int i = 0; i < multipleForecast.Length; i++)
             {
                 double forecasts = inverse(dataSet, multipleForecast[i], interval);
                 dataSet.Append(forecasts);
                 Console.WriteLine("day " + (i + 1) + ": " + forecasts);
-                returnArray[i] = ($"day {i + 1} : {forecasts}");
+                returnArray[i] = ($"{forecasts}");
                 interval--;
             }
             return returnArray;
@@ -123,7 +123,6 @@ namespace consoletester
             Console.WriteLine("BIC: " + arimam.GetBayesianInformationCriterion());
         }
 
-
         [Obsolete]
         public string[] CreateArimaModelWithForecast(string[] data, int daysToForecast, int p, int d, int q)
         {
@@ -143,7 +142,7 @@ namespace consoletester
             return md.SaveMultiStepForecast(mytemparray, multipleForecast, 365);
         }
 
-        [Obsolete]
+
         public void testMethod(string[] data)
         {
             model md = new model();
@@ -155,7 +154,7 @@ namespace consoletester
 
             ArimaModel arimam = new ArimaModel(myArray, 1, 0, 1);
             arimam.EstimateMean = true;
-            arimam.Compute();
+            arimam.Fit();
             //md.SummarizeArima(arimam);
 
             double forecast = arimam.Forecast();

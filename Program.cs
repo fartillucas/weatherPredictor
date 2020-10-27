@@ -28,15 +28,17 @@ namespace consoletester
             model ml = new model();
             //ml.testMethod(dc.GetDailyPressureFromObservations());
             string[] pressure = ml.CreateArimaModelWithForecast(dc.GetDailyPressureFromObservations(), 7, 1, 0, 1);
-            for (int i = 0; i < pressure.Length; i++)
-            {
-            }
             string[] tempmean = ml.CreateArimaModelWithForecast(dc.GetDailyMeanTemperatureReading(), 7, 1, 0, 1);
             string[] humidity = ml.CreateArimaModelWithForecast(dc.GetDailyHumidityFromObservations(), 7, 1, 0, 1);
             string[] minTemp = ml.CreateArimaModelWithForecast(dc.GetDailyMinTempFromObservations(), 7, 1, 0, 1);
             string[] maxTemp = ml.CreateArimaModelWithForecast(dc.GetDailyMaxTempFromObservations(), 7, 1, 0, 1);
 
-            //  ml.testMethod(dc.GetDailyMinTempFromObservations());
+            for (int i = 0; i < pressure.Length; i++)
+            {
+                dc.SaveDaliyArimaForecast("06123", Convert.ToDouble(tempmean[i]), Convert.ToInt32(Convert.ToDouble(humidity[i])), Convert.ToDouble(pressure[i]), Convert.ToDouble(minTemp[i]), Convert.ToDouble(maxTemp[i]));
+            }
+
+            //ml.testMethod(dc.GetDailyMinTempFromObservations());
             //dc.saveLocalDataset();
             //dc.GetPressureFromObservations();
             //dc.GetMaxTempFromObservations();
