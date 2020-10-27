@@ -125,14 +125,14 @@ namespace consoletester
 
 
         [Obsolete]
-        public string[] CreateArimaModelWithForecast(string[] data, int daysToForecast)
+        public string[] CreateArimaModelWithForecast(string[] data, int daysToForecast, int p, int d, int q)
         {
             model md = new model();
             List<decimal> testList = md.difference(data, 365);
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
 
-            ArimaModel arimam = new ArimaModel(myArray, 3, 0, 2);
+            ArimaModel arimam = new ArimaModel(myArray, p, d, q);
             arimam.EstimateMean = true;
             arimam.Compute();
 
