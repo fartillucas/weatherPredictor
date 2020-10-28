@@ -92,7 +92,7 @@ namespace consoletester
             {
                 double forecasts = inverse(dataSet, multipleForecast[i], interval);
                 dataSet.Append(forecasts);
-                Console.WriteLine("day " + (i + 1) + ": " + forecasts);
+                //Console.WriteLine("day " + (i + 1) + ": " + forecasts);
                 returnArray[i] = ($"{forecasts}");
                 interval--;
             }

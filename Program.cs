@@ -27,16 +27,24 @@ namespace consoletester
             DbConnector dc = new DbConnector();
             model ml = new model();
             //ml.testMethod(dc.GetDailyPressureFromObservations());
-            string[] pressure = ml.CreateArimaModelWithForecast(dc.GetDailyPressureFromObservations(), 7, 1, 0, 1);
-            string[] tempmean = ml.CreateArimaModelWithForecast(dc.GetDailyMeanTemperatureReading(), 7, 1, 0, 1);
-            string[] humidity = ml.CreateArimaModelWithForecast(dc.GetDailyHumidityFromObservations(), 7, 1, 0, 1);
-            string[] minTemp = ml.CreateArimaModelWithForecast(dc.GetDailyMinTempFromObservations(), 7, 1, 0, 1);
-            string[] maxTemp = ml.CreateArimaModelWithForecast(dc.GetDailyMaxTempFromObservations(), 7, 1, 0, 1);
+            List<string> StationIds = dc.GetAllStationIds();
 
-            for (int i = 0; i < pressure.Length; i++)
+
+            for (int i = 0; i < StationIds.Count; i++)
             {
-                dc.SaveDaliyArimaForecast("06123", Convert.ToDouble(tempmean[i]), Convert.ToInt32(Convert.ToDouble(humidity[i])), Convert.ToDouble(pressure[i]), Convert.ToDouble(minTemp[i]), Convert.ToDouble(maxTemp[i]));
+                string[] pressure = ml.CreateArimaModelWithForecast(dc.GetDailyPressureFromObservations(StationIds[i]), 7, 1, 0, 1);
+                string[] tempmean = ml.CreateArimaModelWithForecast(dc.GetDailyMeanTemperatureReading(StationIds[i]), 7, 1, 0, 1);
+                string[] humidity = ml.CreateArimaModelWithForecast(dc.GetDailyHumidityFromObservations(StationIds[i]), 7, 1, 0, 1);
+                string[] minTemp = ml.CreateArimaModelWithForecast(dc.GetDailyMinTempFromObservations(StationIds[i]), 7, 1, 0, 1);
+                string[] maxTemp = ml.CreateArimaModelWithForecast(dc.GetDailyMaxTempFromObservations(StationIds[i]), 7, 1, 0, 1);
+
+                for (int j = 0; j < pressure.Length; j++)
+                {
+                    dc.SaveDaliyArimaForecast(StationIds[i], Convert.ToDouble(tempmean[j]), Convert.ToInt32(Convert.ToDouble(humidity[j])), Convert.ToDouble(pressure[j]), Convert.ToDouble(minTemp[j]), Convert.ToDouble(maxTemp[j]), j + 1);
+                }
+
             }
+
 
             //ml.testMethod(dc.GetDailyMinTempFromObservations());
             //dc.saveLocalDataset();

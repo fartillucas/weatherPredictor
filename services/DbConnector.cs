@@ -3,6 +3,7 @@ using Extreme.Mathematics.LinearAlgebra;
 using Extreme.Statistics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -84,13 +85,13 @@ namespace consoletester.services
 
             }
         }
-        public string[] GetDailyHumidityFromObservations()
+        public string[] GetDailyHumidityFromObservations(string StationId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 List<string> dataset = new List<string>();
                 string[] myarray;
-                SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='humidity_past1h' then Observations.Value end) as Humidity From Observations where StationId = 06123 group by DateKey order by DateKey", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='humidity_past1h' then Observations.Value end) as Humidity From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
                 {
                     conn.Open();
                     using SqlDataReader reader = cmd.ExecuteReader();
@@ -109,13 +110,14 @@ namespace consoletester.services
                 }
             }
         }
-        public string[] GetDailyPressureFromObservations()
+        public string[] GetDailyPressureFromObservations(string StationId)
         {
+            string[] myarray;
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 List<string> dataset = new List<string>();
-                string[] myarray;
-                SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='pressure_at_sea' then Observations.Value end) as Pressure From Observations where StationId = 06123 group by DateKey order by DateKey", conn);
+
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='pressure_at_sea' then Observations.Value end) as Pressure From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
 
 
                 {
@@ -133,21 +135,25 @@ namespace consoletester.services
                         reader.Close();
                         myarray = dataset.ToArray();
                     }
-                    return myarray;
+
+                }
+
+                if (myarray.Length == 0)
+                {
+                    myarray = GetDailyPressureFromObservationsByRegionId(GetRegionIdFromStationId(StationId));
                 }
 
 
-
-
             }
+            return myarray;
         }
-        public string[] GetDailyMinTempFromObservations()
+        public string[] GetDailyMinTempFromObservations(string StationId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 List<string> dataset = new List<string>();
                 string[] myarray;
-                SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_min_past1h' then Observations.Value end) as TempMin From Observations where StationId = 06123 group by DateKey order by DateKey", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_min_past1h' then Observations.Value end) as TempMin From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
 
                 {
                     conn.Open();
@@ -166,13 +172,13 @@ namespace consoletester.services
             }
         }
 
-        public string[] GetDailyMaxTempFromObservations()
+        public string[] GetDailyMaxTempFromObservations(string StationId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 List<string> dataset = new List<string>();
                 string[] myarray;
-                SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_max_past1h' then Observations.Value end) as TempMax From Observations where StationId = 06123 group by DateKey order by DateKey", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_max_past1h' then Observations.Value end) as TempMax From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
 
                 {
                     conn.Open();
@@ -191,7 +197,7 @@ namespace consoletester.services
                 }
             }
         }
-        public string[] GetDailyMeanTemperatureReading()
+        public string[] GetDailyMeanTemperatureReading(string StationId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
@@ -199,7 +205,7 @@ namespace consoletester.services
                 List<string> dataset = new List<string>();
                 string[] myarray;
 
-                SqlCommand cmd = new SqlCommand("SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_mean_past1h' then Observations.Value end) as TempMean From Observations where StationId = 06123 group by DateKey order by DateKey", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_mean_past1h' then Observations.Value end) as TempMean From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
 
 
                 {
@@ -221,17 +227,18 @@ namespace consoletester.services
             }
         }
 
-        public void SaveDaliyArimaForecast(string StationId, double TempMean, int Humidity, double Pressure, double TempMin, double TempMax)
+        public void SaveDaliyArimaForecast(string StationId, double TempMean, int Humidity, double Pressure, double TempMin, double TempMax, int ForecastDay)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
-                SqlCommand cmd = new SqlCommand($"INSERT INTO ForecastsFromArima(StationId, TempMean, Humidity, Pressure, TempMin, TempMax) Values(@StationId, @TempMean, @Humidity, @Pressure, @TempMin, @TempMax)", conn);
+                SqlCommand cmd = new SqlCommand($"INSERT INTO ForecastsFromArima(StationId, TempMean, Humidity, Pressure, TempMin, TempMax, ForecastDay) Values(@StationId, @TempMean, @Humidity, @Pressure, @TempMin, @TempMax, @ForecastDay)", conn);
                 cmd.Parameters.AddWithValue("@StationId", StationId);
                 cmd.Parameters.AddWithValue("@TempMean", TempMean);
                 cmd.Parameters.AddWithValue("@Humidity", Humidity);
                 cmd.Parameters.AddWithValue("@Pressure", Pressure);
                 cmd.Parameters.AddWithValue("@TempMin", TempMin);
                 cmd.Parameters.AddWithValue("@TempMax", TempMax);
+                cmd.Parameters.AddWithValue("@ForecastDay", ForecastDay);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -254,6 +261,69 @@ namespace consoletester.services
                         reader["Observed"], reader["Value"].ToString().Replace(',', '.'));
                 }
             }
+        }
+
+        public List<string> GetAllStationIds()
+        {
+            List<string> returnList = new List<string>();
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT distinct stationId FROM Observations WHERE ParameterId IN ('pressure_at_sea');", conn);
+                conn.Open();
+                using SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    returnList.Add((string)reader["StationId"]);
+                }
+            }
+            return returnList;
+        }
+
+        private int GetRegionIdFromStationId(string StationId)
+        {
+            int regionId = 0;
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand($"SELECT DISTINCT RegionId FROM Stations WHERE Id={StationId.Trim('"')}", conn);
+                conn.Open();
+                using SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    regionId = Convert.ToInt32(reader["RegionId"].ToString());
+                }
+            }
+            return regionId;
+        }
+
+        private string[] GetDailyPressureFromObservationsByRegionId(int RegionId)
+        {
+            string[] myarray;
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                List<string> dataset = new List<string>();
+
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='pressure_at_sea' then Observations.Value end) as Pressure From Observations where RegionId = {RegionId} group by DateKey order by DateKey", conn);
+
+                {
+                    conn.Open();
+                    using SqlDataReader reader = cmd.ExecuteReader();
+                    dataset.Add("DateKey,Pressure");
+
+                    {
+                        while (reader.Read())
+                        {
+                            dataset.Add($"{reader["DateKey"].ToString().Replace(',', '.')},{reader["Pressure"].ToString().Replace(',', '.')}");
+
+                        }
+
+                        reader.Close();
+                        myarray = dataset.ToArray();
+                    }
+
+                }
+
+            }
+            return myarray;
         }
     }
 
