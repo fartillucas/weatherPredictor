@@ -91,7 +91,7 @@ namespace consoletester.services
             {
                 List<string> dataset = new List<string>();
                 string[] myarray;
-                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='humidity_past1h' then Observations.Value end) as Humidity From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='humidity_past1h' then Observations.Value end) as Humidity From Observations where StationId = {StationId.Trim('"')} AND IsValid = 1 group by DateKey order by DateKey", conn);
                 {
                     conn.Open();
                     using SqlDataReader reader = cmd.ExecuteReader();
@@ -117,7 +117,7 @@ namespace consoletester.services
             {
                 List<string> dataset = new List<string>();
 
-                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='pressure_at_sea' then Observations.Value end) as Pressure From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='pressure_at_sea' then Observations.Value end) as Pressure From Observations where StationId = {StationId.Trim('"')} AND IsValid = 1 group by DateKey order by DateKey", conn);
 
 
                 {
@@ -153,7 +153,7 @@ namespace consoletester.services
             {
                 List<string> dataset = new List<string>();
                 string[] myarray;
-                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_min_past1h' then Observations.Value end) as TempMin From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_min_past1h' then Observations.Value end) as TempMin From Observations where StationId = {StationId.Trim('"')} AND IsValid = 1 group by DateKey order by DateKey", conn);
 
                 {
                     conn.Open();
@@ -178,7 +178,7 @@ namespace consoletester.services
             {
                 List<string> dataset = new List<string>();
                 string[] myarray;
-                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_max_past1h' then Observations.Value end) as TempMax From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_max_past1h' then Observations.Value end) as TempMax From Observations where StationId = {StationId.Trim('"')} AND IsValid = 1 group by DateKey order by DateKey", conn);
 
                 {
                     conn.Open();
@@ -205,7 +205,7 @@ namespace consoletester.services
                 List<string> dataset = new List<string>();
                 string[] myarray;
 
-                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_mean_past1h' then Observations.Value end) as TempMean From Observations where StationId = {StationId.Trim('"')} group by DateKey order by DateKey", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT DateKey, AVG(ALL case when Observations.ParameterId='temp_mean_past1h' then Observations.Value end) as TempMean From Observations where StationId = {StationId.Trim('"')} AND IsValid = 1 group by DateKey order by DateKey", conn);
 
 
                 {

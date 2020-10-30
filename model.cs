@@ -152,7 +152,7 @@ namespace consoletester
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
             //double[] mytemparray = templist2.ToArray();
 
-            ArimaModel arimam = new ArimaModel(myArray, 1, 0, 1);
+            ArimaModel arimam = new ArimaModel(myArray, 2, 0, 0);
             arimam.EstimateMean = true;
             arimam.Fit();
             //md.SummarizeArima(arimam);
