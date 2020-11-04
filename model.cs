@@ -5,6 +5,7 @@ using System.Globalization;
 using Extreme.Statistics.TimeSeriesAnalysis;
 using Extreme.Mathematics;
 using Extreme.DataAnalysis;
+using consoletester.services;
 
 namespace consoletester
 {
@@ -124,9 +125,33 @@ namespace consoletester
         }
 
         [Obsolete]
-        public string[] CreateArimaModelWithForecast(string[] data, int daysToForecast, int p, int d, int q)
+        public string[] CreateArimaModelWithForecast(string[] data, int daysToForecast, int p, int d, int q, string StationId)
         {
             model md = new model();
+            if (data.Length <= 365)
+            {
+                DbConnector dbConnector = new DbConnector();
+                if (String.Equals(data[0], "DateKey,Pressure"))
+                {
+                    data = dbConnector.GetDailyPressureFromObservationsByRegionId(dbConnector.GetRegionIdFromStationId(StationId));
+                }
+                if (String.Equals(data[0], "DateKey,TempMean"))
+                {
+                    data = dbConnector.GetDailyMeanTemperatureReadingByRegionId(dbConnector.GetRegionIdFromStationId(StationId));
+                }
+                if (String.Equals(data[0], "DateKey,TempMin"))
+                {
+                    data = dbConnector.GetDailyMinTempFromObservationsByRegionId(dbConnector.GetRegionIdFromStationId(StationId));
+                }
+                if (String.Equals(data[0], "DateKey,TempMax"))
+                {
+                    data = dbConnector.GetDailyMaxTempFromObservationsByRegionId(dbConnector.GetRegionIdFromStationId(StationId));
+                }
+                if (String.Equals(data[0], "DateKey,Humidity"))
+                {
+                    data = dbConnector.GetDailyHumidityFromObservationsByRegionId(dbConnector.GetRegionIdFromStationId(StationId));
+                }
+            }
             List<decimal> testList = md.difference(data, 365);
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
