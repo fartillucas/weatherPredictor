@@ -45,7 +45,8 @@ namespace consoletester
 
             }
 
-            //ml.testMethod(dc.GetDailyMinTempFromObservations());
+            //ml.testMethod(dc.GetDailyPressureFromObservations("06123"), 1, 0, 1); //not valid
+            //ml.testMethod(dc.GetDailyPressureFromObservations("06123"), 2, 0, 0); // valid
             //dc.saveLocalDataset();
             //dc.GetPressureFromObservations();
             //dc.GetMaxTempFromObservations();

@@ -168,7 +168,7 @@ namespace consoletester
         }
 
 
-        public void testMethod(string[] data)
+        public void testMethod(string[] data, int p, int q, int d)
         {
             model md = new model();
             List<decimal> testList = md.difference(data, 365);
@@ -177,7 +177,7 @@ namespace consoletester
             List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
             //double[] mytemparray = templist2.ToArray();
 
-            ArimaModel arimam = new ArimaModel(myArray, 2, 0, 0);
+            ArimaModel arimam = new ArimaModel(myArray, p, d, q);
             arimam.EstimateMean = true;
             arimam.Fit();
             //md.SummarizeArima(arimam);
@@ -185,7 +185,7 @@ namespace consoletester
             double forecast = arimam.Forecast();
 
 
-            Vector<double> multipleForecast = arimam.Forecast(7);
+            Vector<double> multipleForecast = arimam.Forecast(1);
             double[] localTempMeanList = md.convertDecimalListToDoubleArray(md.getTempList());
             double[] mytemparray = (from x in localTempMeanList select x).ToArray();
 
