@@ -194,7 +194,7 @@ namespace consoletester
 
 
             forecast = inverse(mytemparray, forecast, 365);
-            Console.WriteLine(forecast + " forecast test");
+            //Console.WriteLine(forecast + " forecast test");
 
             Vector<double> nextValue = arimam.Forecast(myArray.Length);
             //for (int i = 0; i < myArray.Length; i++)

@@ -44,9 +44,27 @@ namespace consoletester
                 }
 
             }
-
+            //Console.WriteLine("TempMean invalid model");
+            //ml.testMethod(dc.GetDailyMeanTemperatureReading("06123"), 3, 0, 2); //not valid
+            //Console.WriteLine("TempMean valid model");
+            //ml.testMethod(dc.GetDailyMeanTemperatureReading("06123"), 4, 0, 1); // valid 
+            //Console.WriteLine("TempMin invalid model");
+            //ml.testMethod(dc.GetDailyMinTempFromObservations("06123"), 2, 0, 2); //not valid
+            //Console.WriteLine("TempMin valid model");
+            //ml.testMethod(dc.GetDailyMinTempFromObservations("06123"), 5, 0, 2); // valid
+            //Console.WriteLine("TempMax invalid model");
+            //ml.testMethod(dc.GetDailyMaxTempFromObservations("06123"), 3, 0, 2); //not valid
+            //Console.WriteLine("TempMax valid model");
+            //ml.testMethod(dc.GetDailyMaxTempFromObservations("06123"), 3, 0, 2); // valid
+            //Console.WriteLine("Humidity invalid model");
+            //ml.testMethod(dc.GetDailyHumidityFromObservations("06123"), 6, 0, 2); //not valid
+            //Console.WriteLine("Humidity valid model");
+            //ml.testMethod(dc.GetDailyHumidityFromObservations("06123"), 4, 0, 2); // valid 
+            //Console.WriteLine("Pressure invalid model");
             //ml.testMethod(dc.GetDailyPressureFromObservations("06123"), 1, 0, 1); //not valid
+            //Console.WriteLine("Pressure valid model");
             //ml.testMethod(dc.GetDailyPressureFromObservations("06123"), 2, 0, 0); // valid
+
             //dc.saveLocalDataset();
             //dc.GetPressureFromObservations();
             //dc.GetMaxTempFromObservations();
