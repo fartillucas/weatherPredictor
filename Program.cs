@@ -1,11 +1,7 @@
 ﻿using consoletester.services;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace consoletester
 {
@@ -14,19 +10,10 @@ namespace consoletester
         [Obsolete]
         static void Main(string[] args)
         {
-            //Datareader dr = new Datareader();
-            //dr.readData();
-            //dr.splitData();
 
-            //TestTrainSplitter tts = new TestTrainSplitter();
-            //{
-            //    tts.TestReader();
-            //    tts.TestSplitter();
-            //    tts.SaveToCsv();
-            //}
+
             DbConnector dc = new DbConnector();
             model ml = new model();
-            //ml.testMethod(dc.GetDailyPressureFromObservations());
             List<string> StationIds = dc.GetAllStationIds();
 
 
@@ -65,14 +52,6 @@ namespace consoletester
             //Console.WriteLine("Pressure valid model");
             //ml.testMethod(dc.GetDailyPressureFromObservations("06123"), 2, 0, 0); // valid
 
-            //dc.saveLocalDataset();
-            //dc.GetPressureFromObservations();
-            //dc.GetMaxTempFromObservations();
-            //dc.GetMinTempFromObservations();
-            //dc.SavedailyDatasetWithDate();
-            //dc.SavedailyDataset();
-            //dc.SaveAlarmDataset();
-            //dc.GetHumidityFromObservations();
         }
     }
 }

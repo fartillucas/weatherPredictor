@@ -75,16 +75,7 @@ namespace consoletester
             return yhat + history[^interval];
         }
 
-        public void ShowMultiStepForecast(double[] dataSet, Vector<double> multipleForecast, int interval)
-        {
-            for (int i = 0; i < multipleForecast.Length; i++)
-            {
-                double forecasts = inverse(dataSet, multipleForecast[i], interval);
-                dataSet.Append(forecasts);
-                Console.WriteLine("day " + (i + 1) + ": " + forecasts);
-                interval--;
-            }
-        }
+
 
         public string[] SaveMultiStepForecast(double[] dataSet, Vector<double> multipleForecast, int interval)
         {
@@ -159,6 +150,7 @@ namespace consoletester
             ArimaModel arimam = new ArimaModel(myArray, p, d, q);
             arimam.EstimateMean = true;
             arimam.Compute();
+            md.SummarizeArima(arimam);
 
             Vector<double> multipleForecast = arimam.Forecast(daysToForecast);
             double[] localTempMeanList = md.convertDecimalListToDoubleArray(md.getTempList());
@@ -168,53 +160,6 @@ namespace consoletester
         }
 
 
-        public void testMethod(string[] data, int p, int q, int d)
-        {
-            model md = new model();
-            List<decimal> testList = md.difference(data, 365);
-            double[] myArray = md.convertDecimalListToDoubleArray(testList);
-
-            List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
-            //double[] mytemparray = templist2.ToArray();
-
-            ArimaModel arimam = new ArimaModel(myArray, p, d, q);
-            arimam.EstimateMean = true;
-            arimam.Fit();
-            //md.SummarizeArima(arimam);
-
-            double forecast = arimam.Forecast();
-
-
-            Vector<double> multipleForecast = arimam.Forecast(1);
-            double[] localTempMeanList = md.convertDecimalListToDoubleArray(md.getTempList());
-            double[] mytemparray = (from x in localTempMeanList select x).ToArray();
-
-            int days = 365;
-            md.ShowMultiStepForecast(mytemparray, multipleForecast, days);
-
-
-            forecast = inverse(mytemparray, forecast, 365);
-            //Console.WriteLine(forecast + " forecast test");
-
-            Vector<double> nextValue = arimam.Forecast(myArray.Length);
-            //for (int i = 0; i < myArray.Length; i++)
-            //Console.WriteLine(myArray[i]);
-
-            //Console.WriteLine(nextValue + " Test");
-
-
-
-            //using (var writer = new StreamWriter(@"C:\Users\Michael\source\repos\consoletester\shit3.csv"))
-            //using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-
-            //    foreach (var value in testList)
-            //    {
-            //        csv.WriteField(value);
-            //        csv.NextRecord();
-            //        // csv.WriteRecords(testList.ToArray());
-            //        writer.Flush();
-            //    }
-        }
     }
 }
 
