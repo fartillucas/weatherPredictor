@@ -1,9 +1,11 @@
-﻿using consoletester.services;
+﻿using consoletester.aquaintance;
+using consoletester.data;
+using consoletester.logic;
 using System;
 using System.Collections.Generic;
 
 
-namespace consoletester
+namespace consoletester.starter
 {
     class Program
     {
@@ -12,8 +14,8 @@ namespace consoletester
         {
 
 
-            DbConnector dc = new DbConnector();
-            model ml = new model();
+            IDatabaseFacade dc = databaseFacade.getInstance();
+            IModelFacade ml = modelFacade.getInstance();
             List<string> StationIds = dc.GetAllStationIds();
 
 
@@ -53,5 +55,7 @@ namespace consoletester
             //ml.testMethod(dc.GetDailyPressureFromObservations("06123"), 2, 0, 0); // valid
 
         }
+
+
     }
 }

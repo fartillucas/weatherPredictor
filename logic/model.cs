@@ -5,25 +5,25 @@ using System.Globalization;
 using Extreme.Statistics.TimeSeriesAnalysis;
 using Extreme.Mathematics;
 using Extreme.DataAnalysis;
-using consoletester.services;
+using consoletester.data;
 
-namespace consoletester
+namespace consoletester.logic
 {
     public class model
     {
-        public string[] dataSet;
-        public dynamic temporarySet;
+        internal string[] dataSet;
+        internal dynamic temporarySet;
         List<decimal> diff = new List<decimal>();
         List<decimal> temporaryList = new List<decimal>();
 
         //getter method til dataset
-        public List<decimal> getTempList()
+        internal List<decimal> getTempList()
         {
             return temporaryList;
         }
 
         //method til at konventere dataset fra decimal til double list
-        public List<double> convertDecimalListToDobuleList(List<decimal> listToBeConverted)
+        internal List<double> convertDecimalListToDobuleList(List<decimal> listToBeConverted)
         {
             List<double> returnList = new List<double>();
             for (int i = 0; i < listToBeConverted.Count; i++)
@@ -33,13 +33,13 @@ namespace consoletester
             return returnList;
         }
 
-        public double[] convertDecimalListToDoubleArray(List<decimal> listToBeConverted)
+        internal double[] convertDecimalListToDoubleArray(List<decimal> listToBeConverted)
         {
             return convertDecimalListToDobuleList(listToBeConverted).ToArray();
         }
 
 
-        public List<decimal> difference(string[] dataInput, int interval = 1)
+        internal List<decimal> difference(string[] dataInput, int interval = 1)
         {
             dataSet = dataInput;
             temporarySet = (from tempMean in dataSet
@@ -70,14 +70,14 @@ namespace consoletester
             return diff;
         }
 
-        public double inverse(double[] history, double yhat, int interval = 1)
+        internal double inverse(double[] history, double yhat, int interval = 1)
         {
             return yhat + history[^interval];
         }
 
 
 
-        public string[] SaveMultiStepForecast(double[] dataSet, Vector<double> multipleForecast, int interval)
+        internal string[] SaveMultiStepForecast(double[] dataSet, Vector<double> multipleForecast, int interval)
         {
             string[] returnArray = new string[multipleForecast.Length];
             for (int i = 0; i < multipleForecast.Length; i++)
@@ -91,7 +91,7 @@ namespace consoletester
             return returnArray;
         }
 
-        public void SummarizeArima(ArimaModel arimam)
+        internal void SummarizeArima(ArimaModel arimam)
         {
             Console.WriteLine("Variable              Value    Std.Error  t-stat  p-Value");
             foreach (Parameter parameter in arimam.Parameters)
@@ -116,7 +116,7 @@ namespace consoletester
         }
 
         [Obsolete]
-        public string[] CreateArimaModelWithForecast(string[] data, int daysToForecast, int p, int d, int q, string StationId)
+        internal string[] CreateArimaModelWithForecast(string[] data, int daysToForecast, int p, int d, int q, string StationId)
         {
             model md = new model();
             if (data.Length <= 365)

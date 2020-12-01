@@ -1,17 +1,16 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
 
-namespace consoletester.services
+namespace consoletester.data
 {
     public class DbConnector
     {
 
         string ConnectionString = "Server=akctest01.database.windows.net;Database=akctestdb01;uid=DMIuserLogin;password=DmiLogin34!DK;Trusted_Connection=false";
 
-        public string[] GetDailyHumidityFromObservations(string StationId)
+        internal string[] GetDailyHumidityFromObservations(string StationId)
         {
             List<string> dataset = new List<string>();
             string[] myarray;
@@ -46,7 +45,7 @@ namespace consoletester.services
             }
             return myarray;
         }
-        public string[] GetDailyPressureFromObservations(string StationId)
+        internal string[] GetDailyPressureFromObservations(string StationId)
         {
             string[] myarray;
             using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -86,7 +85,7 @@ namespace consoletester.services
             }
             return myarray;
         }
-        public string[] GetDailyMinTempFromObservations(string StationId)
+        internal string[] GetDailyMinTempFromObservations(string StationId)
         {
             List<string> dataset = new List<string>();
             string[] myarray;
@@ -120,7 +119,7 @@ namespace consoletester.services
             return myarray;
         }
 
-        public string[] GetDailyMaxTempFromObservations(string StationId)
+        internal string[] GetDailyMaxTempFromObservations(string StationId)
         {
             List<string> dataset = new List<string>();
             string[] myarray;
@@ -153,7 +152,7 @@ namespace consoletester.services
             }
             return myarray;
         }
-        public string[] GetDailyMeanTemperatureReading(string StationId)
+        internal string[] GetDailyMeanTemperatureReading(string StationId)
         {
             List<string> dataset = new List<string>();
             string[] myarray;
@@ -184,7 +183,7 @@ namespace consoletester.services
             return myarray;
         }
 
-        public void SaveDaliyArimaForecast(string StationId, double TempMean, int Humidity, double Pressure, double TempMin, double TempMax, int ForecastDay)
+        internal void SaveDaliyArimaForecast(string StationId, double TempMean, int Humidity, double Pressure, double TempMin, double TempMax, int ForecastDay)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
@@ -204,7 +203,7 @@ namespace consoletester.services
         }
 
 
-        public List<string> GetAllStationIds()
+        internal List<string> GetAllStationIds()
         {
             List<string> returnList = new List<string>();
             using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -220,7 +219,7 @@ namespace consoletester.services
             return returnList;
         }
 
-        public int GetRegionIdFromStationId(string StationId)
+        internal int GetRegionIdFromStationId(string StationId)
         {
             int regionId = 0;
             using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -236,7 +235,7 @@ namespace consoletester.services
             return regionId;
         }
 
-        public string[] GetDailyPressureFromObservationsByRegionId(int RegionId)
+        internal string[] GetDailyPressureFromObservationsByRegionId(int RegionId)
         {
             string[] myarray;
             using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -267,7 +266,7 @@ namespace consoletester.services
             return myarray;
         }
 
-        public string[] GetDailyMeanTemperatureReadingByRegionId(int RegionId)
+        internal string[] GetDailyMeanTemperatureReadingByRegionId(int RegionId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
@@ -290,7 +289,7 @@ namespace consoletester.services
                 return myarray;
             }
         }
-        public string[] GetDailyMaxTempFromObservationsByRegionId(int RegionId)
+        internal string[] GetDailyMaxTempFromObservationsByRegionId(int RegionId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
@@ -313,7 +312,7 @@ namespace consoletester.services
                 }
             }
         }
-        public string[] GetDailyMinTempFromObservationsByRegionId(int RegionId)
+        internal string[] GetDailyMinTempFromObservationsByRegionId(int RegionId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
@@ -336,7 +335,7 @@ namespace consoletester.services
                 }
             }
         }
-        public string[] GetDailyHumidityFromObservationsByRegionId(int RegionId)
+        internal string[] GetDailyHumidityFromObservationsByRegionId(int RegionId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
@@ -359,6 +358,8 @@ namespace consoletester.services
                 }
             }
         }
+
+
     }
 
 }
