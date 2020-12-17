@@ -26,7 +26,7 @@ namespace consoletester.logic
         [Obsolete]
         public string[] CreateArimaModelWithForecast(string[] data, int daysToForecast, int p, int d, int q, string StationId)
         {
-            return instance.CreateArimaModelWithForecast(data, daysToForecast, p, d, q, StationId);
+            return model.CreateArimaModelWithForecast(data, daysToForecast, p, d, q, StationId);
         }
 
     }

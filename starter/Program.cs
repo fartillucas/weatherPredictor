@@ -16,6 +16,7 @@ namespace consoletester.starter
 
             IDatabaseFacade dc = databaseFacade.getInstance();
             IModelFacade ml = modelFacade.getInstance();
+
             List<string> StationIds = dc.GetAllStationIds();
 
 
