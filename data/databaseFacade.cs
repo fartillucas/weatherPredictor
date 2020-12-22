@@ -1,7 +1,7 @@
-﻿using consoletester.aquaintance;
+﻿using WeatherPredictorComponent.aquaintance;
 using System.Collections.Generic;
 
-namespace consoletester.data
+namespace WeatherPredictorComponent.data
 {
     class databaseFacade : IDatabaseFacade
     {

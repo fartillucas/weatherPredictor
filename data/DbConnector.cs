@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 
 
-namespace consoletester.data
+namespace WeatherPredictorComponent.data
 {
     public class DbConnector
     {

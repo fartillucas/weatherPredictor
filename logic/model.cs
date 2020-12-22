@@ -5,9 +5,9 @@ using System.Globalization;
 using Extreme.Statistics.TimeSeriesAnalysis;
 using Extreme.Mathematics;
 using Extreme.DataAnalysis;
-using consoletester.data;
+using WeatherPredictorComponent.data;
 
-namespace consoletester.logic
+namespace WeatherPredictorComponent.logic
 {
     public class model
     {
@@ -70,9 +70,9 @@ namespace consoletester.logic
             return diff;
         }
 
-        internal double inverse(double[] history, double yhat, int interval = 1)
+        internal double inverse(double[] history, double differencedWeatherData, int interval = 1)
         {
-            return yhat + history[^interval];
+            return differencedWeatherData + history[^interval];
         }
 
 
@@ -119,7 +119,7 @@ namespace consoletester.logic
         internal string[] CreateArimaModelWithForecast(string[] data, int daysToForecast, int p, int d, int q, string StationId)
         {
             model md = new model();
-            if (data.Length <= 365)
+            if (data.Length <= 365)//can be adjusted to dataset selection
             {
                 DbConnector dbConnector = new DbConnector();
                 if (String.Equals(data[0], "DateKey,Pressure"))
@@ -145,7 +145,6 @@ namespace consoletester.logic
             }
             List<decimal> testList = md.difference(data, 365);
             double[] myArray = md.convertDecimalListToDoubleArray(testList);
-            List<double> templist2 = md.convertDecimalListToDobuleList(md.getTempList());
 
             ArimaModel arimam = new ArimaModel(myArray, p, d, q);
             arimam.EstimateMean = true;

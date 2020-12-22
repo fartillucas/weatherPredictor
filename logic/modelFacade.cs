@@ -1,24 +1,23 @@
-﻿using consoletester.aquaintance;
+﻿using WeatherPredictorComponent.aquaintance;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace consoletester.logic
+
+namespace WeatherPredictorComponent.logic
 {
-    public class modelFacade : IModelFacade
+    public class ModelFacade : IModelFacade
     {
-        private static modelFacade instance;
+        private static ModelFacade instance;
         private model model;
-        private modelFacade()
+        private ModelFacade()
         {
             model = new model();
         }
 
-        public static modelFacade getInstance()
+        public static ModelFacade getInstance()
         {
             if (instance == null)
             {
-                instance = new modelFacade();
+                instance = new ModelFacade();
             }
             return instance;
         }
@@ -26,7 +25,7 @@ namespace consoletester.logic
         [Obsolete]
         public string[] CreateArimaModelWithForecast(string[] data, int daysToForecast, int p, int d, int q, string StationId)
         {
-            return instance.CreateArimaModelWithForecast(data, daysToForecast, p, d, q, StationId);
+            return model.CreateArimaModelWithForecast(data, daysToForecast, p, d, q, StationId);
         }
 
     }

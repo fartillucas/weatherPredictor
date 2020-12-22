@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace consoletester.aquaintance
+namespace WeatherPredictorComponent.aquaintance
 {
     interface IDatabaseFacade
     {

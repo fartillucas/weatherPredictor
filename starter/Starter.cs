@@ -1,13 +1,13 @@
-﻿using consoletester.aquaintance;
-using consoletester.data;
-using consoletester.logic;
+﻿using WeatherPredictorComponent.aquaintance;
+using WeatherPredictorComponent.data;
+using WeatherPredictorComponent.logic;
 using System;
 using System.Collections.Generic;
 
 
-namespace consoletester.starter
+namespace WeatherPredictorComponent.starter
 {
-    class Program
+    class starter
     {
         [Obsolete]
         static void Main(string[] args)
@@ -15,7 +15,7 @@ namespace consoletester.starter
 
 
             IDatabaseFacade dc = databaseFacade.getInstance();
-            IModelFacade ml = modelFacade.getInstance();
+            IModelFacade ml = ModelFacade.getInstance();
             List<string> StationIds = dc.GetAllStationIds();
 
 

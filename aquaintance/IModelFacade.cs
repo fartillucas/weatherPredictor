@@ -1,4 +1,4 @@
-﻿namespace consoletester.aquaintance
+﻿namespace WeatherPredictorComponent.aquaintance
 {
     interface IModelFacade
     {
